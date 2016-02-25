@@ -115,7 +115,6 @@
             ],
             "properties": {
                 "geo_point": {
-                    "description": "расположение точки на карте",
                     "$ref": "#/definitions/GeoPoint"
                 },
                 "title": {
@@ -267,7 +266,6 @@
                     "type": "string"
                 },
                 "location": {
-                    "description": "расположение организации",
                     "$ref": "#/definitions/GeoPoint"
                 }
             }
