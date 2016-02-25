@@ -1,0 +1,276 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "oWay Rest API",
+        "description": "**Backend для проекта oWay (*оптимизация поездок по городу*)**\n\nРеализуемого на городском [хакатоне](http://hackathon.2gis.ru/)\n"
+    },
+    "host": "oway.online",
+    "basePath": "/rest/",
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/way": {
+            "post": {
+                "parameters": [
+                    {
+                        "name": "list",
+                        "in": "body",
+                        "description": "Список дел",
+                        "schema": {
+                            "$ref": "#/definitions/TodoList"
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Маршрут выполнения дел",
+                        "schema": {
+                            "$ref": "#/definitions/Way"
+                        }
+                    },
+                    "400": {
+                        "description": "Ошибка в запросе",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/suggest": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "text",
+                        "in": "query",
+                        "description": "поисковая фраза",
+                        "type": "string",
+                        "minLength": 2
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Подсказки организаций",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Firm"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Error": {
+            "description": "Сообщение об ошибке",
+            "required": [
+                "code",
+                "message"
+            ],
+            "properties": {
+                "code": {
+                    "type": "number"
+                },
+                "message": {
+                    "type": "string"
+                }
+            }
+        },
+        "GeoPoint": {
+            "type": "object",
+            "description": "Координаты точки, заданные в системе координат WGS84",
+            "required": [
+                "lon",
+                "lat"
+            ],
+            "properties": {
+                "lon": {
+                    "type": "number",
+                    "format": "double"
+                },
+                "lat": {
+                    "type": "number",
+                    "format": "double"
+                }
+            }
+        },
+        "Point": {
+            "type": "object",
+            "decription": "точка маршрута",
+            "required": [
+                "geo_point",
+                "title",
+                "position"
+            ],
+            "properties": {
+                "geo_point": {
+                    "description": "расположение точки на карте",
+                    "$ref": "#/definitions/GeoPoint"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "address": {
+                    "type": "string"
+                },
+                "position": {
+                    "description": "порядок точки в общем списке",
+                    "type": "integer"
+                }
+            }
+        },
+        "Path": {
+            "type": "object",
+            "decription": "Участок пути",
+            "required": [
+                "geometry"
+            ],
+            "properties": {
+                "geometry": {
+                    "description": "ломанная, показывающая маршрут в формате WKT",
+                    "type": "string"
+                },
+                "duration": {
+                    "description": "Продолжительность маршрута в секундах",
+                    "type": "integer"
+                },
+                "distance": {
+                    "description": "Длина маршрута в метрах",
+                    "type": "integer"
+                }
+            }
+        },
+        "Way": {
+            "type": "object",
+            "description": "маршрут достижения всех пользовательских целей",
+            "required": [
+                "points",
+                "paths"
+            ],
+            "properties": {
+                "total_duration": {
+                    "description": "Продолжительность маршрута в секундах",
+                    "type": "integer"
+                },
+                "total_distance": {
+                    "description": "Длина маршрута в метрах",
+                    "type": "integer"
+                },
+                "points": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Point"
+                    }
+                },
+                "paths": {
+                    "description": "кусочки маршрута",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Path"
+                    }
+                }
+            }
+        },
+        "TodoItem": {
+            "type": "object",
+            "description": "Элемент списка дел",
+            "required": [
+                "key",
+                "title",
+                "type",
+                "position"
+            ],
+            "properties": {
+                "key": {
+                    "description": "уникальный идентификатор",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "название дела",
+                    "type": "string"
+                },
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "geo_point",
+                        "address",
+                        "rubric"
+                    ]
+                },
+                "position": {
+                    "description": "порядок элемента в общем списке",
+                    "type": "integer"
+                },
+                "after": {
+                    "description": "указание порядка выполнения дел, содержит ключ другого дела",
+                    "type": "string"
+                }
+            }
+        },
+        "TodoList": {
+            "type": "object",
+            "description": "Элемент списка дел",
+            "required": [
+                "items"
+            ],
+            "properties": {
+                "title": {
+                    "description": "Название списка дел",
+                    "type": "string"
+                },
+                "items": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/TodoItem"
+                    }
+                },
+                "created_at": {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            }
+        },
+        "Firm": {
+            "type": "object",
+            "description": "Организация",
+            "required": [
+                "key",
+                "title",
+                "location"
+            ],
+            "properties": {
+                "key": {
+                    "description": "уникальный идентификатор",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "название организации",
+                    "type": "string"
+                },
+                "address": {
+                    "description": "адрес",
+                    "type": "string"
+                },
+                "rubric": {
+                    "description": "название основной рубрики",
+                    "type": "string"
+                },
+                "location": {
+                    "description": "расположение организации",
+                    "$ref": "#/definitions/GeoPoint"
+                }
+            }
+        }
+    }
+}
