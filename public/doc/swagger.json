@@ -107,7 +107,7 @@
         },
         "Point": {
             "type": "object",
-            "decription": "точка маршрута",
+            "description": "точка маршрута",
             "required": [
                 "geo_point",
                 "title",
@@ -115,6 +115,7 @@
             ],
             "properties": {
                 "geo_point": {
+                    "description": "расположение точки на карте",
                     "$ref": "#/definitions/GeoPoint"
                 },
                 "title": {
@@ -131,7 +132,7 @@
         },
         "Path": {
             "type": "object",
-            "decription": "Участок пути",
+            "description": "Участок пути",
             "required": [
                 "geometry"
             ],
@@ -266,6 +267,7 @@
                     "type": "string"
                 },
                 "location": {
+                    "description": "расположение организации",
                     "$ref": "#/definitions/GeoPoint"
                 }
             }
