@@ -270,9 +270,14 @@
             "type": "object",
             "description": "Элемент списка дел",
             "required": [
+                "key",
                 "items"
             ],
             "properties": {
+                "key": {
+                    "description": "Ключ списка дел",
+                    "type": "string"
+                },
                 "title": {
                     "description": "Название списка дел",
                     "type": "string"
