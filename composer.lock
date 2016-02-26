@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeinhell/2gis-api.git",
-                "reference": "4bcaafce15db096ae03bf3849db6034c32291d52"
+                "reference": "5264aac033e674295f514322e3c4636067b043b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/akeinhell/2gis-api/zipball/4bcaafce15db096ae03bf3849db6034c32291d52",
-                "reference": "4bcaafce15db096ae03bf3849db6034c32291d52",
+                "url": "https://api.github.com/repos/akeinhell/2gis-api/zipball/5264aac033e674295f514322e3c4636067b043b5",
+                "reference": "5264aac033e674295f514322e3c4636067b043b5",
                 "shasum": ""
             },
             "require": {
@@ -47,7 +47,7 @@
                 }
             ],
             "description": "обертка для API 2gis",
-            "time": "2016-02-26 19:10:46"
+            "time": "2016-02-26 22:59:57"
         },
         {
             "name": "barryvdh/laravel-ide-helper",
