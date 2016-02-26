@@ -4,9 +4,14 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "type": "project",
+    "minimum-stability" : "dev",
+    "prefer-stable" : true,
     "require": {
         "php": ">=5.5.9",
-        "laravel/framework": "5.2.*"
+        "laravel/framework": "5.2.*",
+        "guzzlehttp/guzzle": "^6.1",
+        "akeinhell/2gis-api": "dev-master",
+        "barryvdh/laravel-ide-helper": "^2.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
