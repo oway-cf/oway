@@ -17,16 +17,64 @@
         "application/json"
     ],
     "paths": {
-        "/way": {
+        "/list": {
             "post": {
                 "parameters": [
                     {
                         "name": "list",
                         "in": "body",
                         "description": "Список дел",
+                        "required": true,
                         "schema": {
                             "$ref": "#/definitions/TodoList"
-                        },
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список дел",
+                        "schema": {
+                            "$ref": "#/definitions/TodoList"
+                        }
+                    }
+                }
+            }
+        },
+        "/list/{key}": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "description": "Ключ списка дел",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список дел",
+                        "schema": {
+                            "$ref": "#/definitions/TodoList"
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный запрос",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/list/{key}/way": {
+            "get": {
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "description": "Ключ списка дел",
+                        "type": "string",
                         "required": true
                     }
                 ],
@@ -38,7 +86,7 @@
                         }
                     },
                     "400": {
-                        "description": "Ошибка в запросе",
+                        "description": "Неверный запрос",
                         "schema": {
                             "$ref": "#/definitions/Error"
                         }
