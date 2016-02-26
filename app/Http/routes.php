@@ -15,6 +15,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::group(['prefix' => 'api'], function () {
+    Route::get('suggest/address', 'SuggestController@address');
+    Route::get('suggest/keyword', 'SuggestController@keyword');
+    Route::get('suggest', 'SuggestController@index');
+});
+
 /*
 |--------------------------------------------------------------------------
 | Application Routes
