@@ -191,13 +191,21 @@ var MapDirective = function () {
                 map.fitBounds(pathGroup.getBounds());
             }
 
+            function addMarker(latLng) {
+                DG.marker(latLng).addTo(markerGroup);
+                markerGroup.addTo(map);
+                map.fitBounds(markerGroup.getBounds());
+            }
+
             scope.$watch('points', function () {
                 if (pathGroup) {
                     pathGroup.removeFrom(map);
                     markerGroup.removeFrom(map);
-                    for(i in scope.points.path)
-                    {
+                    for (i in scope.points.path) {
                         addLine(scope.points.path[i]);
+                    }
+                    for (i in scope.points.points) {
+                        addMarker([scope.points.points[i][1], scope.points.points[i][0]]);
                     }
                 }
 
