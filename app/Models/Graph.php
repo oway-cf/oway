@@ -15,7 +15,42 @@ class Graph
      */
     public static function calculateItemsPoints($listItems = [])
     {
+        list($itemsWithPoint, $itemsWithoutPoint) = static::separationItems($listItems);
+
+        $area        = static::getAreaByPoint($itemsWithPoint);
+        $updatedItem = static::findBestPointForCategoryInArea($area, $itemsWithoutPoint);
+
         return static::sortGraph($listItems);
+    }
+
+    public static function getAreaByPoint()
+    {
+        return "POLYGON((82.91259527206421 55.0614369017519,82.90572881698608 55.05902823221974,82.91521310806274 55.05580825372468,82.91259527206421 55.0614369017519))";
+    }
+
+    /**
+     * @param TodoListItem[] $listItems
+     * @return array
+     */
+    public static function separationItems($listItems)
+    {
+        $itemsWithPoint    = [];
+        $itemsWithoutPoint = [];
+
+        foreach ($listItems as $item) {
+            if ($item->lat && $item->lon) {
+                $itemsWithPoint[] = $item;
+            } else {
+                $itemsWithoutPoint[] = $item;
+            }
+        }
+
+        return [$itemsWithPoint, $itemsWithoutPoint];
+    }
+
+    public static function findBestPointForCategoryInArea($area, $itemsWithoutPoint)
+    {
+        return [];
     }
 
     protected static function sortGraph($listItems)
