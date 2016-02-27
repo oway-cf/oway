@@ -27,4 +27,13 @@ class TodoList extends Model
      * @var array
      */
     protected $fillable = ['title'];
+
+    public function getPoints()
+    {
+        return [
+            ["82.910206","55.04982"],
+            ["82.903137","55.060355"],
+            ["82.954886","55.013059"],
+        ];
+    }
 }
