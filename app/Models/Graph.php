@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Cache;
+
 class Graph
 {
     /**
@@ -16,4 +18,27 @@ class Graph
             ["82.954886","55.013059"],
         ];
     }
-} 
+
+    protected static function getEdge($point1, $point2)
+    {
+        $cacheKey = static::getEdgeCacheKey($point1, $point2);
+
+        if ($edge = Cache::get($cacheKey)) {
+            $routePoints = new CarRouteParams();
+            $routePoints->addWaypoint($point1);
+            $routePoints->addWaypoint($point2);
+            Api2Gis::call()->CarRouteDirectionsAsync($routePoints);
+            $edge = Api2Gis::call()->execute();
+            Cache::put($cacheKey, $edge, 30);
+        }
+
+        return $edge;
+    }
+
+    protected static function getEdgeCacheKey($point1, $point2)
+    {
+        $key = sprintf('edge_%s_%s_to_%s_%s', $point1->lon, $point1->lat, $point2->lon, $point2->lat);
+
+        return $key;
+    }
+}
