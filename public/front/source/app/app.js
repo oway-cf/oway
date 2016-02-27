@@ -52,32 +52,37 @@ function LeftFormController($scope, List, Suggest) {
             .$promise
             .then(function (response) {
                 $scope.searchResult = response;
-                console.log(1);
             });
-    }
-}
+    };
 
-function MapController($scope) {
-    var map;
-
-    function initMaps() {
-        map = DG.map('map', {
-            zoom: 13,
-            center: [54.98, 82.89],
-            fullscreenControl: false
+    $scope.pushItems = function () {
+        List.update({
+            key: $scope.list.id,
+            list: $scope.list.todo_list_items
         });
+    };
 
-        map.locate({setView: true, maxZoom: 10});
+    $scope.addItem = function (item) {
+        var listItem = {
+            "key": "string",
+            "title": item.title,
+            "type": "geo_point",
+            "position": $scope.list.todo_list_items.length,
+            //"after": "string",
+            //"before": "string",
+            "lon": item.location.lot,
+            "lat": item.location.lat,
+        };
+
+        $scope.list.todo_list_items.push(listItem);
+        $scope.query = '';
+        $scope.pushItems();
     }
 
-    function addMarker(latLng) {
-        DG.marker(latLng).addTo(map);
+    $scope.delItem = function (index) {
+        $scope.list.todo_list_items.splice(index, 1);
+        $scope.pushItems();
     }
-
-    DG.then(function () {
-        initMaps();
-    });
-
 }
 
 function LeftFormDirective() {
