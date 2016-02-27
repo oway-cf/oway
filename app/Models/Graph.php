@@ -34,6 +34,72 @@ class Graph
         ];
     }
 
+    protected static function sortGraph(array $listItems)
+    {
+        $initial = [];
+        $ways    = [];
+        $cost    = 0;
+
+        for ($i = 1; $i < count($listItems) - 1; $i++) {
+            $initial[] = $i;
+        }
+
+        while (!static::isDescSort($initial)) {
+            $ways[] = $initial;
+            $initial = static::getNextPermutation($initial);
+        }
+        $ways[] = $initial;
+
+        return $ways;
+    }
+
+    protected static function isDescSort($arr)
+    {
+        for ($i = 0; $i < count($arr) - 1; $i++) {
+            if ($arr[$i] < $arr[$i + 1]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    protected static function getNextPermutation($arr)
+    {
+        for ($i = count($arr) - 2; $i >= 0; $i--) {
+            if ($arr[$i] < $arr[$i + 1]) {
+                $min    = $arr[$i + 1];
+                $minPos = $i + 1;
+                for ($j = $minPos; $j < count($arr); $j++) {
+                    if ($arr[$j] < $min && $arr[$j] > $arr[$i]) {
+                        $min    = $arr[$j];
+                        $minPos = $j;
+                    }
+                }
+                $arr = static::changeArrayElements($arr, $i, $minPos);
+                for ($j = $i + 1; $j < count($arr) - 1; $j++) {
+                    for ($k = $j + 1; $k < count($arr); $k++) {
+                        if ($arr[$j] > $arr[$k]) {
+                            $arr = static::changeArrayElements($arr, $j, $k);
+                        }
+                    }
+                }
+                break;
+            }
+        }
+
+        return $arr;
+    }
+
+    protected static function changeArrayElements($arr, $i, $j)
+    {
+        $tmp     = $arr[$j];
+        $arr[$j] = $arr[$i];
+        $arr[$i] = $tmp;
+
+        return $arr;
+    }
+
     protected static function getEdge($point1, $point2)
     {
         $cacheKey = static::getEdgeCacheKey($point1, $point2);
