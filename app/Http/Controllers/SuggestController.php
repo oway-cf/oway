@@ -17,7 +17,8 @@ use Mockery\CountValidator\Exception;
 class SuggestController extends Controller
 {
 
-    public function smart(){
+    public function smart()
+    {
         $item = [
             "id" => 1,
             "title" => "string",
@@ -40,9 +41,13 @@ class SuggestController extends Controller
         ]);
     }
 
-    public function address($json = true)
+    public function address($query = null)
     {
-        $query = request('query');
+        $query = $query ?: request('query');
+        if (!$query) {
+            return response('query not defined', 404);
+        }
+
         $searchParams = new SearchParams();
         $searchParams->setType([
             GeoType::building,
@@ -63,7 +68,6 @@ class SuggestController extends Controller
 
         $addressList = [];
         if ($data) {
-
 
             foreach ($data->getItems() as $item) {
                 $location = null;
@@ -119,7 +123,7 @@ class SuggestController extends Controller
             }
         }
         $return = array_merge($addressList, $companyList);
-        return $json ? response()->json($return) : $return;
+        return response()->json($return);
     }
 
 

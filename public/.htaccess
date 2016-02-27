@@ -18,7 +18,7 @@ Header set Access-Control-Allow-Origin "*"
     RewriteRule ^ index.php [L]
 
     # Handle Authorization Header
-    RewriteCond %{HTTP:Authorization} .
-    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+#    RewriteCond %{HTTP:Authorization} .
+#    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 </IfModule>
 

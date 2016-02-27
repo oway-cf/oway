@@ -1,8 +1,8 @@
 var app = angular.module('oWay', ['ngResource']);
 
 var ListModel = function ($resource, $location) {
-    var path = $location.host() == 'localhost' ? 'http://hackathon/' : 'http://oway.cf/';
-    return $resource(path + 'api/list/:id', {id: '@id'},
+    var path = 'http://' + $location.host();
+    return $resource(path + '/api/list/:id', {id: '@id'},
         {
             get: {method: 'GET', isArray: false},
             create: {method: 'POST', isArray: false},
@@ -11,11 +11,12 @@ var ListModel = function ($resource, $location) {
 }
 
 var SugestModel = function ($resource, $location) {
-    var path = $location.host() == 'localhost' ? 'http://hackathon/' : 'http://oway.cf/';
-    return $resource(path + 'api/suggest/address/?query=:query', {query: '@query'},
+    var path = 'http://' + $location.host();
+
+    return $resource(path + '/api/suggest/address/:query', {query: '@query'},
         {
-            smart: {method: 'GET', isArray: false},
-            address: {method: 'GET', isArray: false},
+            //smart: {method: 'GET', isArray: false},
+            address: {method: 'GET', isArray: true},
         });
 }
 
@@ -29,19 +30,30 @@ function LeftFormController($scope, List, Suggest) {
     listId = localStorage.getItem('listId');
     $scope.query = '';
     if (!listId) {
-        List.create()
+        List.create({list: {title: 'sample', items: []}})
             .$promise
             .then(function (response) {
-                $scope.list = response.key;
+                $scope.list = response;
                 //$scope.items = [];
-                localStorage.setItem('listId', response.key)
+                localStorage.setItem('listId', response.id)
+            }, function () {
+                $scope.list = {
+                    id: 9,
+                    title: "sample",
+                    todo_list_items: [],
+                };
             });
     } else {
         $scope.list = List.get({id: listId});
     }
 
     $scope.search = function () {
-        $scope.searchResult = Suggest.address({query: $scope.query});
+        Suggest.address({query: $scope.query})
+            .$promise
+            .then(function (response) {
+                $scope.searchResult = response;
+                console.log(1);
+            });
     }
 }
 
