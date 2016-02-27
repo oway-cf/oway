@@ -12,9 +12,11 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Mockery\CountValidator\Exception;
 
 class SuggestController extends Controller
 {
+
     public function address($json = true)
     {
         $query = request('query');
@@ -33,44 +35,35 @@ class SuggestController extends Controller
         try {
             $data = Api2Gis::call()->search($searchParams);
         } catch (GisRequestException $e) {
-            return $json ? response()->json([]) : [];
+            $data = null;
         }
 
-        $result = [];
+        $addressList = [];
+        if ($data) {
 
-        foreach ($data->getItems() as $item) {
-            $location = null;
-            if (preg_match('/point/i', $item->geometry->selection)) {
-                $location = preg_replace('/point\((.*?)\)/i', '$1', $item->geometry->selection);
+
+            foreach ($data->getItems() as $item) {
+                $location = null;
+                $lat = $lon = null;
+                if (preg_match('/point/i', $item->geometry->selection)) {
+                    $location = preg_replace('/point\((.*?)\)/i', '$1', $item->geometry->selection);
+                    list($lat, $lon) = explode(' ', $location);
+                }
+                if (!$location) {
+                    continue;
+                }
+                $addressList[] = [
+                    "title" => $item->full_name,
+                    'type' => 'address',
+                    "address" => $item->name,
+                    "location" => [
+                        'lat' => $lat,
+                        'lon' => $lon
+                    ]
+                ];
             }
-            if (!$location) {
-                continue;
-            }
-            $result[] = [
-                'key' => $item->id,
-                "title" => $item->full_name,
-                'type' => 'address',
-                "address" => $item->name,
-                "rubric" => null,
-                "location" => $location ? explode(' ', $location) : null,
-            ];
         }
-        return $json ? response()->json($result) : $result;
-    }
-
-
-    /**
-     * @todo рубрика
-     * @todo фирма
-     * @todo достопримечательность
-     * @param bool $json
-     * @return array|\Illuminate\Http\JsonResponse
-     */
-    public function keyword($json = true)
-    {
-        $query = request('query');
-        $company = [];
-        $rubric = [];
+        $companyList = [];
         $companyParams = new BranchParams();
         $companyParams
             ->setQuery($query)
@@ -91,19 +84,36 @@ class SuggestController extends Controller
                 if (!$item->point) {
                     continue;
                 }
-                $company[] = [
-                    'key' => $item->id,
+                $companyList[] = [
                     'type' => 'company',
                     "title" => $item->name,
                     "address" => $item->address_name,
-                    "rubric" => null,
                     "location" => [
-                        $item->point->lon,
-                        $item->point->lat,
+                        'lon' => $item->point->lon,
+                        'lat' => $item->point->lat,
                     ]
                 ];
             }
         }
+        $return = array_merge($addressList, $companyList);
+        return $json ? response()->json($return) : $return;
+    }
+
+
+    /**
+     * @todo рубрика
+     * @todo фирма
+     * @todo достопримечательность
+     * @param bool $json
+     * @return array|\Illuminate\Http\JsonResponse
+     */
+    public function keyword($json = true)
+    {
+        throw new Exception('Не реализовано!!! :-)');
+        return response()->json([]);
+        $query = request('query');
+        $company = [];
+        $rubric = [];
 
 
         $params = new RubricParams();
