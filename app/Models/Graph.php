@@ -39,7 +39,7 @@ class Graph
             $way[]   = (count($listItems) - 1);
             $wayCost = 0;
             for ($j = 0; $j < count($way) - 1; $j++) {
-                $edge = static::getEdge($listItems[$way[$i]], $listItems[$way[$i + 1]]);
+                $edge = static::getEdge($listItems[$way[$j]], $listItems[$way[$j + 1]]);
                 $wayCost += $edge[0]->items[0]->total_distance;
             }
             if ($wayCost < $cost) {
