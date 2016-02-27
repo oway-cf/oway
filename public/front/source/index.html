@@ -5,7 +5,7 @@
     <title>oWay - оптимизатор поездок по городу</title>
     <link rel="stylesheet" href="css/styles.css">
 </head>
-<body>
+<body ng-controller="MainController as main">
 <header class="header">
     <div class="header__logo">Лого</div>
     <nav class="header__nav">
@@ -19,7 +19,10 @@
 
 <left-form class="left-form"></left-form>
 
-<div id="map" class="map-container" ng-controller="mapCtrl"></div>
+<gis-map points="ways">
+
+</gis-map>
+
 
 <!--Connection scripts-->
 
