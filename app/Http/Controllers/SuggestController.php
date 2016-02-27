@@ -17,6 +17,29 @@ use Mockery\CountValidator\Exception;
 class SuggestController extends Controller
 {
 
+    public function smart(){
+        $item = [
+            "id" => 1,
+            "title" => "string",
+            "photo" => "http://placehold.it/200x200",
+            "type" => "geo_point",
+            "rating" => "9.54",
+            "lon" => "55.55555",
+            "lat" => "88.88888",
+        ];
+        return response()->json([
+            $item,
+            $item,
+            $item,
+            $item,
+            $item,
+            $item,
+            $item,
+            $item,
+            $item,
+        ]);
+    }
+
     public function address($json = true)
     {
         $query = request('query');
