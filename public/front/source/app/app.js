@@ -51,7 +51,7 @@ function LeftFormController($scope, List, Suggest, ListData) {
                 $scope.list = {
                     id: 9,
                     title: "sample",
-                    todo_list_items: [],
+                    items: [],
                 };
             });
     } else {
@@ -72,7 +72,7 @@ function LeftFormController($scope, List, Suggest, ListData) {
             key: $scope.list.id,
             list: {
                 title: 'abrvalg',
-                items: $scope.list.todo_list_items
+                items: $scope.list.items
             }
         });
         List.up($data);
@@ -94,20 +94,20 @@ function LeftFormController($scope, List, Suggest, ListData) {
             "key": "string",
             "title": item.title,
             "type": "geo_point",
-            "position": $scope.list.todo_list_items.length,
+            "position": $scope.list.items.length,
             "after": 0,
             //"before": "string",
             "lon": item.location.lon,
             "lat": item.location.lat,
         };
 
-        $scope.list.todo_list_items.push(listItem);
+        $scope.list.items.push(listItem);
         $scope.query = '';
         $scope.pushItems();
     }
 
     $scope.delItem = function (index) {
-        $scope.list.todo_list_items.splice(index, 1);
+        $scope.list.items.splice(index, 1);
         $scope.pushItems();
     }
 }
