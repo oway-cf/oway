@@ -33,15 +33,10 @@ var SugestModel = function ($resource, $location) {
             address: {method: 'GET', isArray: true},
         });
 }
+
 var MainController = function ($scope, ListData, List) {
     $scope.ways = ListData.ways;
 }
-
-app.controller('mapCtrl', MapController);
-app.controller('leftFormCtrl', LeftFormController);
-app.directive('leftForm', LeftFormDirective);
-app.factory('List', ListModel);
-app.factory('Suggest', SugestModel);
 
 
 function LeftFormController($scope, List, Suggest, ListData) {
@@ -71,10 +66,8 @@ function LeftFormController($scope, List, Suggest, ListData) {
             .$promise
             .then(function (response) {
                 $scope.searchResult = response;
-                console.log(1);
             });
-    }
-
+    };
 
     $scope.pushItems = function () {
         $data = ({
@@ -82,7 +75,7 @@ function LeftFormController($scope, List, Suggest, ListData) {
             key: $scope.list.id,
             list: {
                 title: 'abrvalg',
-                items: $scope.list.items
+                items: $scope.list.todo_list_items
             }
         });
         List.up($data);
