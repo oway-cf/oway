@@ -19,6 +19,12 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('suggest/address', 'SuggestController@address');
     Route::get('suggest/keyword', 'SuggestController@keyword');
     Route::get('suggest', 'SuggestController@index');
+    Route::group(['prefix' => 'list'], function () {
+        Route::post('list', 'ListController@create');
+        Route::put('list/{id}', 'ListController@update');
+        Route::get('list/{id}', 'ListController@show');
+        Route::get('list/{id}/way', 'ListController@buildWay');
+    });
 });
 
 /*
