@@ -80,6 +80,7 @@ class SuggestController extends Controller
                     continue;
                 }
                 $addressList[] = [
+                    "key" => $item->id,
                     "title" => $item->full_name,
                     'type' => 'address',
                     "address" => $item->name,
@@ -112,6 +113,7 @@ class SuggestController extends Controller
                     continue;
                 }
                 $companyList[] = [
+                    "key" => $item->id,
                     'type' => 'company',
                     "title" => $item->name,
                     "address" => $item->address_name,

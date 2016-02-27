@@ -5,32 +5,19 @@
     >
 </div>
 
-<div class="right-form__list" ng-show="query.length == 0 || true">
+<div class="right-form__list" ng-show="query.length == 0">
     <ul>
         <li ng-repeat="item in list.todo_list_items">
             <b>{{item.title}}</b>
-        </li>
-        <li >
-            <b>{item.title}</b>
+            <button ng-click="delItem($index)">del</button>
         </li>
     </ul>
 </div>
 
-<div class="right-form__hints" ng-show="query.length != 0 || true">
-    <div ng-repeat="item in searchResult" class = 'search-item' ng-click="addItem">
+<div class="right-form__hints" ng-show="query.length != 0">
+    <div ng-repeat="item in searchResult" class = 'search-item' ng-click="addItem(item)">
         <h4>{{item.title}}</h4>
         <p>{{item.address}}</p>
-        <div class="btn add">
-            trash-icon
-        </div>
-    </div>
-
-    <div class = 'search-item' ng-click="addItem">
-        <h4>{item.title}</h4>
-        <p>{item.address}</p>
-        <div class="btn add">
-            trash-icon
-        </div>
     </div>
 </div>
 
