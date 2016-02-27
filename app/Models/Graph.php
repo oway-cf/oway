@@ -50,7 +50,7 @@ class Graph
 
         $out = [];
         for ($j = 0; $j < count($way); $j++) {
-            $out[] = $listItems[$initial[$i]];
+            $out[] = $listItems[$initial[$j]];
         }
 
         return $out;
