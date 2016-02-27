@@ -18,7 +18,7 @@
     ],
     "paths": {
         "/list": {
-            "post": {
+            "put": {
                 "parameters": [
                     {
                         "name": "list",
@@ -42,6 +42,31 @@
         },
         "/list/{key}": {
             "get": {
+                "parameters": [
+                    {
+                        "name": "key",
+                        "in": "path",
+                        "description": "Ключ списка дел",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Список дел",
+                        "schema": {
+                            "$ref": "#/definitions/TodoList"
+                        }
+                    },
+                    "400": {
+                        "description": "Неверный запрос",
+                        "schema": {
+                            "$ref": "#/definitions/Error"
+                        }
+                    }
+                }
+            },
+            "post": {
                 "parameters": [
                     {
                         "name": "key",
