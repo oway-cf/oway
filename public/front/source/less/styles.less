@@ -1,7 +1,9 @@
 @import 'common/_mixins';
 @import 'common/_variables';
-@import 'common/_right-form';
+@import 'common/_left-form';
 @import 'common/_map-elements';
+@import 'common/_header';
+@import 'common/_placeholder';
 
 html, body {
   height: 100%;
@@ -10,69 +12,36 @@ html, body {
   .box-sizing();
 }
 
-.header {
-  height: @height-header;
-  background-color: @green;
-
-  & > * {
-    display: inline-block;
-  }
-}
-
-.left-form {
-  display: inline-block;
-  vertical-align: top;
-  width: 30%;
-  font-size: 0;
-}
-
 .map-container {
   display: inline-block;
   vertical-align: top;
-  width: 70%;
-  height: 90%;
   font-size: 0;
 }
 
 .btn {
-  width: 200px;
-  padding: 10px;
-  cursor: pointer;
-  margin: 10px auto;
-  text-align: center;
-  background: @red;
-  color: #FFFFFF;
+  width: 56px;
+  height: 56px;
+  background-color: #008fc1;
+  box-shadow: 0 4px 8px fade(#000, 10), 0 2px 2px fade(#000, 10), 0 0 8px fade(#000, 10);
+  .radius(@radius);
   .box-sizing();
 }
 
 .input {
+  width: 100%;
+  height: 60px;
+  padding: 20px 22px;
+  padding-right: 39px;
+  border: none;
+  border-bottom: 1px solid @grey-border;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 20px;
 
-}
+  .box-sizing();
 
-.left-form {
-  font-size: 14px;
-}
-
-.search-item {
-  cursor: pointer;
-  background-color: #AAAAAA;
-  margin: 10px 10px 0px 10px;
-  padding: 10px;
-  &:hover {
-    background-color: #bebebe;
+  &:focus {
+    outline: none;
   }
 }
 
-.right-form__search {
-  input {
-    width: 90%;
-    margin: 20px;
-  }
-}
-
-.add {
-  background-color: green;
-  &:hover {
-    background-color: darkolivegreen;
-  }
-}

@@ -1,4 +1,6 @@
 var app = angular.module('oWay', ['ngResource']);
+var pageWidth = document.documentElement.clientWidth,
+    pageHeight = document.documentElement.clientHeight;
 
 var ListModel = function ($resource, $location) {
     var path = 'http://' + $location.host();
@@ -26,7 +28,9 @@ app.directive('leftForm', LeftFormDirective);
 app.factory('List', ListModel);
 app.factory('Suggest', SugestModel);
 
+
 function LeftFormController($scope, List, Suggest) {
+    $scope.height = pageHeight - 85;
     listId = localStorage.getItem('listId');
     $scope.query = '';
     if (!listId) {
@@ -57,29 +61,6 @@ function LeftFormController($scope, List, Suggest) {
     }
 }
 
-function MapController($scope) {
-    var map;
-
-    function initMaps() {
-        map = DG.map('map', {
-            zoom: 13,
-            center: [54.98, 82.89],
-            fullscreenControl: false
-        });
-
-        map.locate({setView: true, maxZoom: 10});
-    }
-
-    function addMarker(latLng) {
-        DG.marker(latLng).addTo(map);
-    }
-
-    DG.then(function () {
-        initMaps();
-    });
-
-}
-
 function LeftFormDirective() {
     return {
         restrict: 'E',
@@ -89,10 +70,28 @@ function LeftFormDirective() {
 }
 
 function MapController ($scope){
+    $scope.width = pageWidth - 300;
+    $scope.height = pageHeight - 85;
+
     DG.then(function() {
         var map,
             markerGroup = DG.featureGroup(),
+            markerPathGroup = DG.featureGroup(),
             pathGroup = DG.featureGroup();
+        var iconMarker = DG.icon({
+            iconUrl: './image/pin-icon.png',
+            iconSize: [30, 36],
+            iconAnchor: [15, 26]
+        });
+        var iconMarkerPath = DG.icon({
+            iconUrl: './image/path-pin.png',
+            iconSize: [28, 28]
+        });
+        var iconStartMarkerPath = DG.icon({
+            iconUrl: './image/start-pin.png',
+            iconSize: [28, 28]
+        });
+
 
         function initMaps (){
             map = DG.map('map', {
@@ -105,9 +104,15 @@ function MapController ($scope){
         }
 
         function addMarker (latLng){
-            DG.marker(latLng).addTo(markerGroup);
+            DG.marker(latLng,{icon: iconMarker}).addTo(markerGroup);
             markerGroup.addTo(map);
             map.fitBounds(markerGroup.getBounds());
+        }
+
+        function addMarkerPath (latLng){
+            DG.marker(latLng,{icon: iconMarkerPath}).addTo(markerPathGroup);
+            markerPathGroup.addTo(map);
+            map.fitBounds(markerPathGroup.getBounds());
         }
 
         function outPath (coordinates) {
@@ -130,10 +135,15 @@ function MapController ($scope){
         }
 
         initMaps();
-        addMarker([54.98, 82.89]);
-        addMarker([55.069288, 82.816615]);
-        addMarker([55.011648, 82.902103]);
-        addMarker([54.928935, 82.850967]);
+        addMarker([54.98, 83.09]);
+
+        addMarkerPath([54.98, 82.89]);
+        addMarkerPath([55.069288, 82.816615]);
+        addMarkerPath([55.011648, 82.902103]);
+        addMarkerPath([54.944714, 82.903152]);
+        addMarkerPath([54.928935, 82.850967]);
+
+
         outPath([[54.98, 82.89], [55.069288, 82.816615], [55.011648, 82.902103], [54.944714, 82.903152], [54.928935, 82.850967]]);
 
         document.getElementById('clearMap').addEventListener('click', function () {
