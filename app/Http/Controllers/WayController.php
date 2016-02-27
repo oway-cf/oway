@@ -11,29 +11,31 @@ use App\Http\Controllers\Controller;
 
 class WayController extends Controller
 {
-    public function build($id)
+    private static function examplePoints()
     {
-        $start = ["54.985059", "82.897046"];
-        $coords = [
+        return [
             ["54.985059", "82.897046"],
             ["55.033084", "82.920115"],
             ["55.041993", "82.949499"],
             ["55.054526", "82.893543"],
             ["55.028574", "82.936429"],
         ];
-
-
     }
 
-    private function calc($start, $coords)
+    public function show($id)
     {
-        foreach ($coords as $coord) {
-            $params = new CarRouteParams();
-            $params
-                ->addWaypoint($start)
-                ->addWaypoint($coord);
-            Api2Gis::call()->CarRouteDirectionsAsync($params);
+        return static::getRouteData(static::examplePoints());
+    }
+
+    private function getRouteData($points)
+    {
+        $routePoints = new CarRouteParams();
+
+        foreach ($points as $point) {
+            $routePoints->addWaypoint($point);
+            Api2Gis::call()->CarRouteDirectionsAsync($routePoints);
         }
+
         return Api2Gis::call()->execute();
     }
 }
