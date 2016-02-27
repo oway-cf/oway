@@ -1,6 +1,7 @@
 @import 'common/_mixins';
 @import 'common/_variables';
 @import 'common/_right-form';
+@import 'common/_map-elements';
 
 html, body {
   height: 100%;
@@ -13,9 +14,8 @@ html, body {
   height: @height-header;
   background-color: @green;
 
-  & > *{
+  & > * {
     display: inline-block;
-    text-align: justify;
   }
 }
 
@@ -47,4 +47,32 @@ html, body {
 
 .input {
 
+}
+
+.left-form {
+  font-size: 14px;
+}
+
+.search-item {
+  cursor: pointer;
+  background-color: #AAAAAA;
+  margin: 10px 10px 0px 10px;
+  padding: 10px;
+  &:hover {
+    background-color: #bebebe;
+  }
+}
+
+.right-form__search {
+  input {
+    width: 90%;
+    margin: 20px;
+  }
+}
+
+.add {
+  background-color: green;
+  &:hover {
+    background-color: darkolivegreen;
+  }
 }
