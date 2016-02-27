@@ -71,6 +71,7 @@ function LeftFormController($scope, List, Suggest, ListData) {
     };
 
     $scope.pushItems = function () {
+
         $data = ({
             id: $scope.list.id,
             key: $scope.list.id,
@@ -94,18 +95,18 @@ function LeftFormController($scope, List, Suggest, ListData) {
             })
     }
     $scope.addItem = function (item) {
+        console.log(item);
         var listItem = {
             "key": "string",
             "title": item.title,
             "type": "geo_point",
-            "position": $scope.list.items.length,
+            "position": 0,
             "after": 0,
             //"before": "string",
             "lon": item.location.lon,
             "lat": item.location.lat,
         };
-
-        $scope.list.items.push(listItem);
+        $scope.list.todo_list_items.push(listItem);
         $scope.query = '';
         $scope.pushItems();
     }
@@ -126,8 +127,8 @@ function LeftFormDirective() {
 }
 
 function MapController ($scope){
-    $scope.width = pageWidth - 300;
-    $scope.height = pageHeight - 85;
+    $scope.width = pageWidth - 320;
+    $scope.height = pageHeight - 90;
 
     DG.then(function() {
         var map,
