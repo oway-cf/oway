@@ -33,7 +33,7 @@ class TodoListItem extends Model
      *
      * @var array
      */
-    protected $fillable = ['title', 'type', 'position', 'after'];
+    protected $fillable = ['title', 'type', 'position', 'after', 'lon', 'lat'];
 
 
     public function todoList()
