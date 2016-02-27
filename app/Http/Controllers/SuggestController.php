@@ -70,7 +70,8 @@ class SuggestController extends Controller
 
             foreach ($data->getItems() as $item) {
                 $location = null;
-                $lat      = $lon = null;
+                $lat      = null;
+                $lon      = null;
                 if (preg_match('/point/i', $item->geometry->selection)) {
                     $location = preg_replace('/point\((.*?)\)/i', '$1', $item->geometry->selection);
                     list($lat, $lon) = explode(' ', $location);
