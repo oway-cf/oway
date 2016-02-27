@@ -1,5 +1,4 @@
 var app = angular.module('oWay', ['ngResource']);
-var pageWidth = document.documentElement.clientWidth,
     pageHeight = document.documentElement.clientHeight;
 var map,
     markerGroup,
@@ -124,8 +123,7 @@ function LeftFormDirective() {
 }
 
 function MapController ($scope){
-    $scope.width = pageWidth - 320;
-    $scope.height = pageHeight - 90;
+    $scope.height = pageHeight - 85;
 
     DG.then(function() {
         var map,
