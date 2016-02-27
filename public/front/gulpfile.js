@@ -1,6 +1,6 @@
-var gulp    = require('gulp'),
-    gutil   = require('gulp-util'),
-    config  = require('./gulp.config'),
+var gulp = require('gulp'),
+    gutil = require('gulp-util'),
+    config = require('./gulp.config'),
     sourcemaps = require('gulp-sourcemaps'),
     less = require('gulp-less'),
     concat = require('gulp-concat'),
@@ -20,7 +20,8 @@ gulp.task('clean:css', cleanCss);
 gulp.task('clean:js', cleanJs);
 gulp.task('clean', clean);
 
-gulp.task('compile:js', compileJs);
+gulp.task('compile:modules', compileJs);
+gulp.task('compile:js', compileApp);
 gulp.task('compile:less', compileLess);
 gulp.task('copy:images', copyImages);
 gulp.task('copy:fonts', copyFonts);
@@ -29,7 +30,7 @@ gulp.task('copy:libraries', copyLibraries);
 
 gulp.task('server', startServer);
 
-gulp.task('build', ['clean', 'copy:images', 'copy:fonts', 'copy:libraries', 'copy:html', 'compile:js', 'compile:less'], copyIndex);
+gulp.task('build', ['clean', 'copy:images', 'copy:fonts', 'copy:libraries', 'copy:html', 'compile:modules', 'compile:js', 'compile:less'], copyIndex);
 
 gulp.task('watcher:css', ['clean:css', 'compile:less'], copyIndex);
 gulp.task('watcher:js', ['clean:js', 'compile:js', 'copy:html'], copyIndex);
@@ -56,15 +57,24 @@ function copyIndex() {
 
 function compileJs() {
     return browserify({entries: config.browserify.entries}).bundle()
-        .pipe(source(config.app.index))
+        .pipe(source(config.app.modules))
         .pipe(buffer())
         .pipe(sourcemaps.init())
         .pipe(ngAnnotate({single_quotes: true}))
         .pipe(addStream.obj(prepareTemplates()))
-        .pipe(concat(config.app.index))
+        .pipe(concat(config.app.modules))
         .pipe(uglify())
         .on('error', gutil.log)
         .pipe(sourcemaps.write())
+        .pipe(gulp.dest(config.app.folder))
+}
+
+function compileApp() {
+    return gulp.src([
+        config.js.all,
+        config.js.index,
+    ])
+        .pipe(concat(config.app.index))
         .pipe(gulp.dest(config.app.folder))
 }
 
