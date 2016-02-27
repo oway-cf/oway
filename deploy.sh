@@ -5,4 +5,4 @@ composer install
 php artisan migrate
 cd public/front/
 npm install
-gulp
+gulp build
