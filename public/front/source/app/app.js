@@ -40,11 +40,8 @@ var MainController = function ($scope, ListData, List) {
 }
 
 
-
 function LeftFormController($scope, List, Suggest, ListData) {
-
-
-
+    $scope.height = pageHeight - 85;
     listId = localStorage.getItem('listId');
     $scope.query = '';
     if (!listId) {
@@ -70,10 +67,8 @@ function LeftFormController($scope, List, Suggest, ListData) {
             .$promise
             .then(function (response) {
                 $scope.searchResult = response;
-                console.log(1);
             });
-    }
-
+    };
 
     $scope.pushItems = function () {
         $data = ({
@@ -81,7 +76,7 @@ function LeftFormController($scope, List, Suggest, ListData) {
             key: $scope.list.id,
             list: {
                 title: 'abrvalg',
-                items: $scope.list.items
+                items: $scope.list.todo_list_items
             }
         });
         List.up($data);
