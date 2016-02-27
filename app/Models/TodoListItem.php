@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $lon
  * @property string $lat
  * @property-read \App\Models\TodoList $todoList
+ * @property string $address
  */
 class TodoListItem extends Model
 {
@@ -33,7 +34,7 @@ class TodoListItem extends Model
      *
      * @var array
      */
-    protected $fillable = ['title', 'type', 'position', 'after'];
+    protected $fillable = ['title', 'type', 'position', 'after', 'lon', 'lat', 'address'];
 
 
     public function todoList()

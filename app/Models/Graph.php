@@ -7,11 +7,12 @@ use Cache;
 class Graph
 {
     /**
-     * @param \TodoListItems[] $listItems
-     * @return \TodoListItems[]
+     * @param TodoListItem[] $listItems
+     * @return TodoListItem[]
      */
-    public static function calculateItemsPoints(array $listItems = [])
+    public static function calculateItemsPoints($listItems = [])
     {
+        return $listItems;
         return [
             [
                 'title' => 'Julius Meinl',

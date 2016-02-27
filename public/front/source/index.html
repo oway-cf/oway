@@ -3,23 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>oWay - оптимизатор поездок по городу</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,100,100italic,400italic,500,500italic,700,700italic,900,900italic" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
 <header class="header">
-    <div class="header__logo">Лого</div>
-    <nav class="header__nav">
-        <a href="#" class="header__nav-item-link">Помощь</a>
-        <a href="#" class="header__nav-item-link">Что-нибудь</a>
-        <a href="#" class="header__nav-item-link">Регистрация</a>
-        <a href="#" class="header__nav-item-link">Войти</a>
-    </nav>
-    <button class="btn" id="clearMap">Очистить</button>
+    <div class="header__logo">
+        <img class="header__logo-img" src="image/logo-white.png" alt="oWay">
+        <span class="header__logo-slogan">Slogan every body</span>
+    </div>
+    <div class="header__login">
+        <a href="#" class="header__login-btn">Войти</a>
+    </div>
 </header>
 
-<left-form class="left-form"></left-form>
-
-<div id="map" class="map-container" ng-controller="mapCtrl"></div>
+<left-form class="left-form" ng-style="{'height': height+'px'}"></left-form>
+<div ng-controller="mapCtrl" id="map" class="map-container" ng-style="{'height': height+'px','width':width+'px'}"></div>
 
 <!--Connection scripts-->
 
