@@ -7,6 +7,7 @@ var ListModel = function ($resource, $location) {
             get: {method: 'GET', isArray: false},
             create: {method: 'POST', isArray: false},
             up: {method: 'POST', isArray: false, params: {type: 'update'}},
+            way: {method: 'GET', isArray: false, params: {type: 'way'}},
         });
 }
 
@@ -67,6 +68,15 @@ function LeftFormController($scope, List, Suggest) {
         List.up($data);
     };
 
+    $scope.calcRoute = function () {
+        $scope.wayBuilding = true;
+        List.way({
+            id: $scope.list.id
+        }).$promise
+            .then(function () {
+                $scope.wayBuilding = false;
+            })
+    }
     $scope.addItem = function (item) {
         var listItem = {
             "key": "string",
