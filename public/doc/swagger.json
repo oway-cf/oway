@@ -338,23 +338,19 @@
             ],
             "properties": {
                 "key": {
-                    "description": "уникальный идентификатор",
+                    "description": "Уникальный идентификатор",
                     "type": "string"
                 },
                 "title": {
-                    "description": "название организации",
+                    "description": "Название места (организации)",
                     "type": "string"
                 },
                 "address": {
-                    "description": "адрес",
-                    "type": "string"
-                },
-                "rubric": {
-                    "description": "название основной рубрики",
+                    "description": "Строковое представление адреса",
                     "type": "string"
                 },
                 "location": {
-                    "description": "расположение организации",
+                    "description": "Координаты выбранной точки",
                     "$ref": "#/definitions/GeoPoint"
                 }
             }
