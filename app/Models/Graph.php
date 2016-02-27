@@ -5,11 +5,12 @@ namespace App\Models;
 class Graph
 {
     /**
-     * @param \TodoListItems[] $listItems
-     * @return \TodoListItems[]
+     * @param TodoListItem[] $listItems
+     * @return TodoListItem[]
      */
     public static function calculateItemsPoints(array $listItems = [])
     {
+        return $listItems;
         return [
             [
                 'title' => 'Julius Meinl',
