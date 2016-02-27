@@ -7,71 +7,57 @@ use akeinhell\RequestParams\CarRouteParams;
 
 class Way
 {
-    public static function getGisRoute(TodoList $list)
+    public static function build(TodoList $list)
     {
-        $points = $list->getPoints();
+        $listItems = $list->todoListItems;
+        $points    = Graph::calculateItemsPoints($listItems);
+
+        return [
+            'total_distance' => 123,
+            'total_duration' => 23,
+            'points'         => $points,
+            'paths'          => static::recursivePrepareData(static::getGisRoute($points)),
+        ];
+    }
+
+    private static function recursivePrepareData($items)
+    {
+        $result = [];
+
+        if (is_array($items)) {
+            foreach ($items as $item) {
+                $result = array_merge($result, static::recursivePrepareData($item));
+            }
+        } elseif (is_object($items)) {
+            if (!empty($items->selection)) {
+                return [$items->selection];
+            }
+            foreach ($items as $item) {
+                $result = array_merge($result, static::recursivePrepareData($item));
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param TodoListItem[] $points
+     * @return \akeinhell\Types\GisResponse[]
+     */
+    private static function getGisRoute($points)
+    {
+        if (empty($points)) {
+            return [];
+        }
+
         $routePoints = new CarRouteParams();
 
         foreach ($points as $point) {
-            $routePoints->addWaypoint($point);
-            Api2Gis::call()->CarRouteDirectionsAsync($routePoints);
+            $routePoints->addWaypoint([$point->lon, $point->lat]);
         }
 
+        Api2Gis::call()->CarRouteDirectionsAsync($routePoints);
+
         return Api2Gis::call()->execute();
-    }
-
-    public static function build(TodoList $list)
-    {
-        return static::testLinestring();
-        $gisRoute = static::getGisRoute($list);
-        return array_pluck($gisRoute, 'items.type');
-    }
-
-    private static function testLinestring()
-    {
-        return [
-            "LINESTRING(82.910057 55.049707,82.910057 55.049708)",
-            "LINESTRING(82.910057 55.049708,82.910031 55.049714,82.910001 55.049712,82.90943 55.049571)",
-            "LINESTRING(82.90943 55.049571,82.909315 55.049542)",
-            "LINESTRING(82.909315 55.049542,82.909517 55.049276)",
-            "LINESTRING(82.909517 55.049276,82.908299 55.048973)",
-            "LINESTRING(82.908299 55.048973,82.908016 55.048903)",
-            "LINESTRING(82.908016 55.048903,82.90749 55.048772)",
-            "LINESTRING(82.90749 55.048772,82.906701 55.048576)",
-            "LINESTRING(82.906701 55.048576,82.906455 55.048515)",
-            "LINESTRING(82.906455 55.048515,82.905815 55.048356)",
-            "LINESTRING(82.905815 55.048356,82.904431 55.048012)",
-            "LINESTRING(82.904431 55.048012,82.903589 55.047803)",
-            "LINESTRING(82.903589 55.047803,82.903107 55.047683)",
-            "LINESTRING(82.903107 55.047683,82.902095 55.047432)",
-            "LINESTRING(82.902095 55.047432,82.901758 55.047714)",
-            "LINESTRING(82.901758 55.047714,82.901137 55.048235)",
-            "LINESTRING(82.901137 55.048235,82.899669 55.049465)",
-            "LINESTRING(82.899669 55.049465,82.899033 55.049999)",
-            "LINESTRING(82.899033 55.049999,82.89874 55.050245)",
-            "LINESTRING(82.89874 55.050245,82.898501 55.050445)",
-            "LINESTRING(82.898501 55.050445,82.898065 55.050811)",
-            "LINESTRING(82.898065 55.050811,82.897868 55.050976)",
-            "LINESTRING(82.897868 55.050976,82.897364 55.051398)",
-            "LINESTRING(82.897364 55.051398,82.896537 55.052092)",
-            "LINESTRING(82.896537 55.052092,82.895771 55.052734)",
-            "LINESTRING(82.895771 55.052734,82.895727 55.052771)",
-            "LINESTRING(82.895727 55.052771,82.898057 55.053687)",
-            "LINESTRING(82.898057 55.053687,82.900466 55.054634)",
-            "LINESTRING(82.900466 55.054634,82.903071 55.055658)",
-            "LINESTRING(82.903071 55.055658,82.905531 55.056625)",
-            "LINESTRING(82.905531 55.056625,82.905521 55.05673)",
-            "LINESTRING(82.905521 55.05673,82.905589 55.057109)",
-            "LINESTRING(82.905589 55.057109,82.905638 55.057378)",
-            "LINESTRING(82.905638 55.057378,82.905716 55.057806)",
-            "LINESTRING(82.905716 55.057806,82.905759 55.058044,82.905755 55.058124)",
-            "LINESTRING(82.905755 55.058124,82.905742 55.058365,82.90545 55.060049)",
-            "LINESTRING(82.90545 55.060049,82.905425 55.06019)",
-            "LINESTRING(82.905425 55.06019,82.90519 55.060177)",
-            "LINESTRING(82.90519 55.060177,82.903817 55.060099,82.903763 55.060102,82.903733 55.060109,82.903697 55.06013,82.903547 55.06029)",
-            "LINESTRING(82.903547 55.06029,82.903276 55.060207)",
-            "LINESTRING(82.903276 55.060207,82.903276 55.060207)",
-            "LINESTRING(82.903276 55.060207,82.903276 55.060207)",
-        ];
     }
 }
