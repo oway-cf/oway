@@ -23,7 +23,7 @@ Route::group(['prefix' => 'api'], function () {
         Route::post('list', 'ListController@create');
         Route::put('list/{id}', 'ListController@update');
         Route::get('list/{id}', 'ListController@show');
-        Route::get('list/{id}/way', 'ListController@buildWay');
+        Route::get('list/{id}/way', 'WayController@show');
     });
 });
 
