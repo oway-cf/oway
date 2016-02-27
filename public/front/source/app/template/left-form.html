@@ -13,15 +13,15 @@
         </div>
         <div class="left-form__list" ng-show="query.length == 0">
             <ul>
-                <li ng-repeat="item in list.todo_list_items">
-                    <b>{{item.title}}</b>
-                    <button ng-click="delItem($index)">del</button>
+                <li class="left-form__list-item" ng-repeat="item in list.todo_list_items">
+                    <div class="left-form__list-item-number"><span>1</span></div>
+                    <h4>{{item.title</h4>
+                    <button class="btn-delete" ng-click="delItem($index)"></button>
                 </li>
             </ul>
         </div>
-
         <div class="left-form__hints" ng-show="query.length != 0">
-            <div ng-repeat="item in searchResult" class="search-item" ng-click="addItem(item)">
+            <div ng-repeat="item in searchResult" class="left-form__hints-item" ng-click="addItem(item)">
                 <h4>{{item.title}}</h4>
                 <p>{{item.address}}</p>
             </div>
