@@ -8,10 +8,8 @@ use akeinhell\RequestParams\BranchParams;
 use akeinhell\RequestParams\RubricParams;
 use akeinhell\RequestParams\SearchParams;
 use akeinhell\Types\GeoType;
-use Illuminate\Http\Request;
-
 use App\Http\Requests;
-use App\Http\Controllers\Controller;
+use App\Models\Firms;
 use Mockery\CountValidator\Exception;
 
 class SuggestController extends Controller
@@ -19,7 +17,7 @@ class SuggestController extends Controller
 
     public function address($json = true)
     {
-        $query = request('query');
+        $query        = request('query');
         $searchParams = new SearchParams();
         $searchParams->setType([
             GeoType::building,
@@ -44,18 +42,22 @@ class SuggestController extends Controller
 
             foreach ($data->getItems() as $item) {
                 $location = null;
-                $lat = $lon = null;
+                $lat      = null;
+                $lon      = null;
+
                 if (preg_match('/point/i', $item->geometry->selection)) {
                     $location = preg_replace('/point\((.*?)\)/i', '$1', $item->geometry->selection);
                     list($lat, $lon) = explode(' ', $location);
                 }
+
                 if (!$location) {
                     continue;
                 }
+
                 $addressList[] = [
-                    "title" => $item->full_name,
-                    'type' => 'address',
-                    "address" => $item->name,
+                    "title"    => $item->full_name,
+                    'type'     => 'address',
+                    "address"  => $item->name,
                     "location" => [
                         'lat' => $lat,
                         'lon' => $lon
@@ -63,7 +65,7 @@ class SuggestController extends Controller
                 ];
             }
         }
-        $companyList = [];
+        $companyList   = [];
         $companyParams = new BranchParams();
         $companyParams
             ->setQuery($query)
@@ -85,10 +87,10 @@ class SuggestController extends Controller
                     continue;
                 }
                 $companyList[] = [
-                    'type' => 'company',
-                    "title" => $item->name,
-                    "address" => $item->address_name,
-                    "location" => [
+                    'type'     => 'company',
+                    'title'    => $item->name,
+                    'address'  => $item->address_name,
+                    'location' => [
                         'lon' => $item->point->lon,
                         'lat' => $item->point->lat,
                     ]
@@ -96,6 +98,7 @@ class SuggestController extends Controller
             }
         }
         $return = array_merge($addressList, $companyList);
+
         return $json ? response()->json($return) : $return;
     }
 
@@ -104,16 +107,19 @@ class SuggestController extends Controller
      * @todo рубрика
      * @todo фирма
      * @todo достопримечательность
+     *
      * @param bool $json
+     *
      * @return array|\Illuminate\Http\JsonResponse
      */
     public function keyword($json = true)
     {
         throw new Exception('Не реализовано!!! :-)');
+
         return response()->json([]);
-        $query = request('query');
+        $query   = request('query');
         $company = [];
-        $rubric = [];
+        $rubric  = [];
 
 
         $params = new RubricParams();
@@ -131,11 +137,11 @@ class SuggestController extends Controller
         if ($data) {
             foreach ($data->getItems() as $item) {
                 $company[] = [
-                    'key' => $item->id,
-                    'type' => 'rubric',
-                    "title" => $item->name,
-                    'address' => null,
-                    'rubric' => null,
+                    'key'      => $item->id,
+                    'type'     => 'rubric',
+                    'title'    => $item->name,
+                    'address'  => null,
+                    'rubric'   => null,
                     'location' => null,
                 ];
             }
@@ -143,6 +149,7 @@ class SuggestController extends Controller
 
 
         $result = array_merge($rubric, $company);
+
         return $json ? response()->json($result) : $result;
     }
 
@@ -153,6 +160,20 @@ class SuggestController extends Controller
             $this->keyword(false)
 
         );
+
+        return response()->json($data);
+    }
+
+    public function firms()
+    {
+        $query = request('query');
+
+        try {
+            $data = Firms::find($query);
+        } catch (GisRequestException $e) {
+            $data = null;
+        }
+
         return response()->json($data);
     }
 }
