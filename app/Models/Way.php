@@ -9,7 +9,8 @@ class Way
 {
     public static function build(TodoList $list)
     {
-        $points = $list->getPoints();
+        $listItems = $list->todoListItems->toArray();
+        $points    = Graph::calculateItemsPoints($listItems);
 
         return [
             'points' => $points,
