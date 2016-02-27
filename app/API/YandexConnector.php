@@ -3,6 +3,7 @@
 namespace App\API;
 
 use GuzzleHttp\Client;
+use Illuminate\Support\Facades\Cache;
 
 class YandexConnector {
 
@@ -12,6 +13,7 @@ class YandexConnector {
     const API_URL = 'https://search-maps.yandex.ru/v1/';
     const LANG    = 'ru_RU';
     const API_KEY = 'YANDEX_API_KEY';
+    const CACHE_TIME = 120;
 
     /**
      * Organization types
@@ -83,11 +85,19 @@ class YandexConnector {
             ]
         ]);
 
-        if ($response->getStatusCode() !== 200) {
-            throw new \HttpResponseException('Wrong request sended');
+        $cacheKey = sprintf('api_yandex_%s_%s_%s_%s', getenv(static::API_KEY), static::LANG, $this->query, $this->type);
+
+        if (!Cache::has($cacheKey)) {
+            if ($response->getStatusCode() !== 200) {
+                throw new \HttpResponseException('Wrong request sended');
+            }
+
+            Cache::put($cacheKey, $this->formatResponse($response->getBody()), static::CACHE_TIME);
+
+            return $this->formatResponse($response->getBody());
         }
 
-        return $this->formatResponse($response->getBody());
+        return Cache::get($cacheKey);
     }
 
     /**
