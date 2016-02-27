@@ -184,16 +184,16 @@ function MapController ($scope){
         }
 
         initMaps();
-        addMarker([54.98, 83.09]);
-
-        addMarkerPath([54.98, 82.89]);
-        addMarkerPath([55.069288, 82.816615]);
-        addMarkerPath([55.011648, 82.902103]);
-        addMarkerPath([54.944714, 82.903152]);
-        addMarkerPath([54.928935, 82.850967]);
-
-
-        outPath([[54.98, 82.89], [55.069288, 82.816615], [55.011648, 82.902103], [54.944714, 82.903152], [54.928935, 82.850967]]);
+        //addMarker([54.98, 83.09]);
+        //
+        //addMarkerPath([54.98, 82.89]);
+        //addMarkerPath([55.069288, 82.816615]);
+        //addMarkerPath([55.011648, 82.902103]);
+        //addMarkerPath([54.944714, 82.903152]);
+        //addMarkerPath([54.928935, 82.850967]);
+        //
+        //
+        //outPath([[54.98, 82.89], [55.069288, 82.816615], [55.011648, 82.902103], [54.944714, 82.903152], [54.928935, 82.850967]]);
 
         //document.getElementById('clearMap').addEventListener('click', function () {
         //    clearMap() ;
