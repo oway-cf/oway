@@ -18,7 +18,7 @@
     ],
     "paths": {
         "/list": {
-            "post": {
+            "put": {
                 "parameters": [
                     {
                         "name": "list",
@@ -66,7 +66,7 @@
                     }
                 }
             },
-            "put": {
+            "post": {
                 "parameters": [
                     {
                         "name": "key",
@@ -74,15 +74,6 @@
                         "description": "Ключ списка дел",
                         "type": "string",
                         "required": true
-                    },
-                    {
-                        "name": "list",
-                        "in": "body",
-                        "description": "Список дел",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/TodoList"
-                        }
                     }
                 ],
                 "responses": {
@@ -338,23 +329,19 @@
             ],
             "properties": {
                 "key": {
-                    "description": "уникальный идентификатор",
+                    "description": "Уникальный идентификатор",
                     "type": "string"
                 },
                 "title": {
-                    "description": "название организации",
+                    "description": "Название места (организации)",
                     "type": "string"
                 },
                 "address": {
-                    "description": "адрес",
-                    "type": "string"
-                },
-                "rubric": {
-                    "description": "название основной рубрики",
+                    "description": "Строковое представление адреса",
                     "type": "string"
                 },
                 "location": {
-                    "description": "расположение организации",
+                    "description": "Координаты выбранной точки",
                     "$ref": "#/definitions/GeoPoint"
                 }
             }
