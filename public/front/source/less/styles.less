@@ -1,0 +1,50 @@
+@import 'common/_mixins';
+@import 'common/_variables';
+@import 'common/_right-form';
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  .box-sizing();
+}
+
+.header {
+  height: @height-header;
+  background-color: @green;
+
+  & > *{
+    display: inline-block;
+    text-align: justify;
+  }
+}
+
+.left-form {
+  display: inline-block;
+  vertical-align: top;
+  width: 30%;
+  font-size: 0;
+}
+
+.map-container {
+  display: inline-block;
+  vertical-align: top;
+  width: 70%;
+  height: 90%;
+  font-size: 0;
+}
+
+.btn {
+  width: 200px;
+  padding: 10px;
+  cursor: pointer;
+  margin: 10px auto;
+  text-align: center;
+  background: @red;
+  color: #FFFFFF;
+  .box-sizing();
+}
+
+.input {
+
+}
