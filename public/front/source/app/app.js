@@ -1,4 +1,15 @@
 var app = angular.module('oWay', ['ngResource']);
+var map,
+    markerGroup,
+    pathGroup;
+
+
+var ListData = function () {
+    return {
+        ways: []
+    };
+}
+
 
 var ListModel = function ($resource, $location) {
     var path = 'http://' + $location.host();
@@ -21,13 +32,12 @@ var SugestModel = function ($resource, $location) {
         });
 }
 
-app.controller('mapCtrl', MapController);
-app.controller('leftFormCtrl', LeftFormController);
-app.directive('leftForm', LeftFormDirective);
-app.factory('List', ListModel);
-app.factory('Suggest', SugestModel);
+var MainController = function ($scope, ListData, List) {
+    $scope.ways = ListData.ways;
+}
 
-function LeftFormController($scope, List, Suggest) {
+
+function LeftFormController($scope, List, Suggest, ListData) {
     listId = localStorage.getItem('listId');
     $scope.query = '';
     if (!listId) {
@@ -73,8 +83,10 @@ function LeftFormController($scope, List, Suggest) {
         List.way({
             id: $scope.list.id
         }).$promise
-            .then(function () {
+            .then(function (response) {
                 $scope.wayBuilding = false;
+                ListData.ways = response;
+                $scope.ways = response;
             })
     }
     $scope.addItem = function (item) {
@@ -109,10 +121,10 @@ function LeftFormDirective() {
 }
 
 function MapController($scope) {
+
     DG.then(function () {
-        var map,
-            markerGroup = DG.featureGroup(),
-            pathGroup = DG.featureGroup();
+        markerGroup = DG.featureGroup();
+        pathGroup = DG.featureGroup();
 
         function initMaps() {
             map = DG.map('map', {
@@ -150,11 +162,12 @@ function MapController($scope) {
         }
 
         initMaps();
-        addMarker([54.98, 82.89]);
-        addMarker([55.069288, 82.816615]);
-        addMarker([55.011648, 82.902103]);
-        addMarker([54.928935, 82.850967]);
-        outPath([[54.98, 82.89], [55.069288, 82.816615], [55.011648, 82.902103], [54.944714, 82.903152], [54.928935, 82.850967]]);
+
+        //addMarker([54.98, 82.89]);
+        //addMarker([55.069288, 82.816615]);
+        //addMarker([55.011648, 82.902103]);
+        //addMarker([54.928935, 82.850967]);
+        //outPath([[54.98, 82.89], [55.069288, 82.816615], [55.011648, 82.902103], [54.944714, 82.903152], [54.928935, 82.850967]]);
 
         document.getElementById('clearMap').addEventListener('click', function () {
             clearMap();
@@ -162,3 +175,46 @@ function MapController($scope) {
     });
 
 }
+
+
+var MapDirective = function () {
+    return {
+        restrict: 'E',
+        //replace: true,
+        scope: {
+            points: '='
+        },
+        link: function (scope, el, attr) {
+            function addLine(line) {
+                DG.Wkt.geoJsonLayer(line).addTo(pathGroup);
+                pathGroup.addTo(map);
+                map.fitBounds(pathGroup.getBounds());
+            }
+
+            scope.$watch('points', function () {
+                if (pathGroup) {
+                    pathGroup.removeFrom(map);
+                    markerGroup.removeFrom(map);
+                    for(i in scope.points.path)
+                    {
+                        addLine(scope.points.path[i]);
+                    }
+                }
+
+
+            })
+        },
+        controller: MapController,
+        templateUrl: 'template/map-tpl.html'
+    }
+};
+
+
+app.controller('mapCtrl', MapController);
+app.controller('leftFormCtrl', LeftFormController);
+app.controller('MainController', MainController);
+app.directive('leftForm', LeftFormDirective);
+app.directive('gisMap', MapDirective);
+app.factory('List', ListModel);
+app.factory('Suggest', SugestModel);
+app.factory('ListData', ListData);
