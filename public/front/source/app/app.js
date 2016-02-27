@@ -198,9 +198,9 @@ function MapController ($scope){
 
         outPath([[54.98, 82.89], [55.069288, 82.816615], [55.011648, 82.902103], [54.944714, 82.903152], [54.928935, 82.850967]]);
 
-        document.getElementById('clearMap').addEventListener('click', function () {
-            clearMap() ;
-        });
+        //document.getElementById('clearMap').addEventListener('click', function () {
+        //    clearMap() ;
+        //});
     });
 
 }
