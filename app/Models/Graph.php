@@ -8,7 +8,7 @@ class Graph
      * @param TodoListItem[] $listItems
      * @return TodoListItem[]
      */
-    public static function calculateItemsPoints(array $listItems = [])
+    public static function calculateItemsPoints($listItems = [])
     {
         return $listItems;
         return [

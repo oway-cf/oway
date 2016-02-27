@@ -9,7 +9,7 @@ class Way
 {
     public static function build(TodoList $list)
     {
-        $listItems = $list->todoListItems->toArray();
+        $listItems = $list->todoListItems;
         $points    = Graph::calculateItemsPoints($listItems);
 
         return [
@@ -44,11 +44,12 @@ class Way
      * @param TodoListItem[] $points
      * @return \akeinhell\Types\GisResponse[]
      */
-    private static function getGisRoute(array $points)
+    private static function getGisRoute($points)
     {
         if (empty($points)) {
             return [];
         }
+
         $routePoints = new CarRouteParams();
 
         foreach ($points as $point) {
