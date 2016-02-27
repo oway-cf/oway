@@ -2,11 +2,11 @@ var app = angular.module('oWay', ['ngResource']);
 
 var ListModel = function ($resource, $location) {
     var path = 'http://' + $location.host();
-    return $resource(path + '/api/list/:id', {id: '@id'},
+    return $resource(path + '/api/list/:id/:type', {id: '@id', type: '@type'},
         {
             get: {method: 'GET', isArray: false},
             create: {method: 'POST', isArray: false},
-            update: {method: 'PUT', isArray: false},
+            up: {method: 'POST', isArray: false, params: {type: 'update'}},
         });
 }
 
@@ -56,10 +56,15 @@ function LeftFormController($scope, List, Suggest) {
     };
 
     $scope.pushItems = function () {
-        List.update({
+        $data = ({
+            id: $scope.list.id,
             key: $scope.list.id,
-            list: $scope.list.todo_list_items
+            list: {
+                title: 'abrvalg',
+                items: $scope.list.todo_list_items
+            }
         });
+        List.up($data);
     };
 
     $scope.addItem = function (item) {
@@ -68,9 +73,9 @@ function LeftFormController($scope, List, Suggest) {
             "title": item.title,
             "type": "geo_point",
             "position": $scope.list.todo_list_items.length,
-            //"after": "string",
+            "after": 0,
             //"before": "string",
-            "lon": item.location.lot,
+            "lon": item.location.lon,
             "lat": item.location.lat,
         };
 
@@ -93,13 +98,13 @@ function LeftFormDirective() {
     }
 }
 
-function MapController ($scope){
-    DG.then(function() {
+function MapController($scope) {
+    DG.then(function () {
         var map,
             markerGroup = DG.featureGroup(),
             pathGroup = DG.featureGroup();
 
-        function initMaps (){
+        function initMaps() {
             map = DG.map('map', {
                 zoom: 13,
                 center: [54.98, 82.89],
@@ -109,13 +114,13 @@ function MapController ($scope){
             map.locate({setView: true, maxZoom: 10});
         }
 
-        function addMarker (latLng){
+        function addMarker(latLng) {
             DG.marker(latLng).addTo(markerGroup);
             markerGroup.addTo(map);
             map.fitBounds(markerGroup.getBounds());
         }
 
-        function outPath (coordinates) {
+        function outPath(coordinates) {
             var color_path = ["#ffffff", "#ff4600"],
                 weight_path = [12, 6];
             for (var i = 0; i < 2; i++) {
@@ -128,7 +133,7 @@ function MapController ($scope){
             map.fitBounds(pathGroup.getBounds());
         }
 
-        function clearMap (){
+        function clearMap() {
             console.log("clear");
             pathGroup.removeFrom(map);
             markerGroup.removeFrom(map);
@@ -142,7 +147,7 @@ function MapController ($scope){
         outPath([[54.98, 82.89], [55.069288, 82.816615], [55.011648, 82.902103], [54.944714, 82.903152], [54.928935, 82.850967]]);
 
         document.getElementById('clearMap').addEventListener('click', function () {
-            clearMap() ;
+            clearMap();
         });
     });
 
