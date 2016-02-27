@@ -297,6 +297,13 @@
                 "after": {
                     "description": "указание порядка выполнения дел, содержит ключ другого дела",
                     "type": "string"
+                },
+                "before": {
+                    "description": "указание порядка выполнения дел, содержит ключ другого дела",
+                    "type": "string"
+                },
+                "geo_point": {
+                    "$ref": "#/definitions/GeoPoint"
                 }
             }
         },
