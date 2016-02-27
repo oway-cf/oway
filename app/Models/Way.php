@@ -46,10 +46,13 @@ class Way
      */
     private static function getGisRoute(array $points)
     {
+        if (empty($points)) {
+            return [];
+        }
         $routePoints = new CarRouteParams();
 
         foreach ($points as $point) {
-            $routePoints->addWaypoint([$point['lon'], $point['lat']]);
+            $routePoints->addWaypoint([$point->lon, $point->lat]);
         }
 
         Api2Gis::call()->CarRouteDirectionsAsync($routePoints);
