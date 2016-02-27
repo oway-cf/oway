@@ -15,6 +15,7 @@
 .left-form__content {
   display: inline-block;
   vertical-align: top;
+  width: 100%;
   padding: 0;
   overflow-y: auto;
   .box-sizing();
@@ -44,6 +45,25 @@
       transition: bottom 1s ease;
     }
   }
+}
+
+.left-from__empty {
+  width: 100%;
+}
+
+.left-from__empty-icon {
+  width: 220px;
+  height: 150px;
+  margin: 20px auto;
+  background: transparent url('../image/empty-list.png') no-repeat 50%;
+}
+.left-from__empty-text {
+  width: 220px;
+  margin: 0 auto;
+  font-family: Roboto, sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  color: @grey-text;
 }
 
 .left-form__search-icon {
