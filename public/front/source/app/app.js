@@ -1,15 +1,34 @@
-require ('angular');
-require ('angular-route');
-require ('../libs/dg-maps.js');
+var app = angular.module('oWay', []);
 
-var app = angular.module('oWay', ['ngRoute']);
-
+app.controller('mapCtrl', MapController);
 app.controller('leftFormCtrl', LeftFormController);
 app.directive('leftForm', LeftFormDirective);
 
-
 function LeftFormController ($scope){
-    $scope.addMarker = addMarker([54.98, 82.89]);
+    console.log($scope);
+}
+
+function MapController ($scope){
+    var map;
+
+    function initMaps (){
+        map = DG.map('map', {
+            zoom: 13,
+            center: [54.98, 82.89],
+            fullscreenControl: false
+        });
+
+        map.locate({setView: true, maxZoom: 10});
+    }
+
+    function addMarker (latLng){
+        DG.marker(latLng).addTo(map);
+    }
+
+    DG.then(function() {
+        initMaps();
+    });
+
 }
 
 function LeftFormDirective (){
