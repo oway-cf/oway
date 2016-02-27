@@ -19,10 +19,14 @@
 </header>
 
 <left-form class="left-form" ng-style="{'height': height+'px'}"></left-form>
+<gis-map points="ways"></gis-map>
 
-<gis-map points="ways">
-
-</gis-map>
+<div class="loader-wrapper" ng-show="wayBuilding">
+    <div class="loader-route">
+        <img class="pulse" src="image/load-icon.png"/>
+        <p>LOADING MEUW MEUW…</p>
+    </div>
+</div>
 
 <!--Connection scripts-->
 
