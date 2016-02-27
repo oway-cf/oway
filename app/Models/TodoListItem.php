@@ -15,6 +15,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property integer $after
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property string $lon
+ * @property string $lat
+ * @property-read \App\Models\TodoList $todoList
  */
 class TodoListItem extends Model
 {
@@ -31,4 +34,10 @@ class TodoListItem extends Model
      * @var array
      */
     protected $fillable = ['title', 'type', 'position', 'after'];
+
+
+    public function todoList()
+    {
+        return $this->belongsTo(TodoList::class);
+    }
 }
