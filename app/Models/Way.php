@@ -13,8 +13,10 @@ class Way
         $points    = Graph::calculateItemsPoints($listItems);
 
         return [
-            'points' => $points,
-            'path'   => static::recursivePrepareData(static::getGisRoute($points)),
+            'total_distance' => 123,
+            'total_duration' => 23,
+            'points'         => $points,
+            'paths'          => static::recursivePrepareData(static::getGisRoute($points)),
         ];
     }
 
@@ -47,7 +49,7 @@ class Way
         $routePoints = new CarRouteParams();
 
         foreach ($points as $point) {
-            $routePoints->addWaypoint($point);
+            $routePoints->addWaypoint([$point['lon'], $point['lat']]);
         }
 
         Api2Gis::call()->CarRouteDirectionsAsync($routePoints);
