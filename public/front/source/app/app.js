@@ -35,17 +35,16 @@ var SugestModel = function ($resource, $location) {
 }
 var MainController = function ($scope, ListData, List) {
     $scope.ways = ListData.ways;
+    $scope.height = pageHeight - 85;
+    $scope.heightList = $scope.height - 60;
 }
 
-app.controller('mapCtrl', MapController);
-app.controller('leftFormCtrl', LeftFormController);
-app.directive('leftForm', LeftFormDirective);
-app.factory('List', ListModel);
-app.factory('Suggest', SugestModel);
 
 
 function LeftFormController($scope, List, Suggest, ListData) {
-    $scope.height = pageHeight - 85;
+
+
+
     listId = localStorage.getItem('listId');
     $scope.query = '';
     if (!listId) {

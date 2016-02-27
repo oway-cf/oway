@@ -6,22 +6,24 @@
         <div class="left-form__search-icon"></div>
         <div class="left-form__close-icon"></div>
     </div>
-    <div class="left-from__empty">
+    <div class="left-form__content"  ng-style="{'height': heightList+'px'}">
+        <div class="left-from__empty">
 
-    </div>
-    <div class="left-form__list" ng-show="query.length == 0">
-        <ul>
-            <li ng-repeat="item in list.todo_list_items">
-                <b>{{item.title}}</b>
-                <button ng-click="delItem($index)">del</button>
-            </li>
-        </ul>
-    </div>
+        </div>
+        <div class="left-form__list" ng-show="query.length == 0">
+            <ul>
+                <li ng-repeat="item in list.todo_list_items">
+                    <b>{{item.title}}</b>
+                    <button ng-click="delItem($index)">del</button>
+                </li>
+            </ul>
+        </div>
 
-    <div class="left-form__hints" ng-show="query.length != 0">
-        <div ng-repeat="item in searchResult" class="search-item" ng-click="addItem(item)">
-            <h4>{{item.title}}</h4>
-            <p>{{item.address}}</p>
+        <div class="left-form__hints" ng-show="query.length != 0">
+            <div ng-repeat="item in searchResult" class="search-item" ng-click="addItem(item)">
+                <h4>{{item.title}}</h4>
+                <p>{{item.address}}</p>
+            </div>
         </div>
     </div>
 </div>
