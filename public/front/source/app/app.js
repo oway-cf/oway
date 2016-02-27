@@ -33,9 +33,10 @@ var SugestModel = function ($resource, $location) {
             address: {method: 'GET', isArray: true},
         });
 }
-
 var MainController = function ($scope, ListData, List) {
     $scope.ways = ListData.ways;
+    $scope.height = pageHeight - 85;
+    $scope.heightList = $scope.height - 60;
 }
 
 
