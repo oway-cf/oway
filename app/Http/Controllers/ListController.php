@@ -34,7 +34,7 @@ class ListController extends Controller
 
             $listModel->save();
 
-            foreach (array_get($list, 'items') as $item) {
+            foreach (array_get($list, 'items', []) as $item) {
                 $todoListItem = new TodoListItem($item);
 
                 $todoListItem->todoList()->associate($listModel);
@@ -69,7 +69,7 @@ class ListController extends Controller
                 $item->delete();
             }
 
-            foreach (array_get($list, 'items') as $listItem) {
+            foreach (array_get($list, 'items', []) as $listItem) {
                 $todoListItem = new TodoListItem($listItem);
 
                 $todoListItem->todoList()->associate($listModel);
