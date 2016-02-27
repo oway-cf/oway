@@ -21,7 +21,7 @@ Route::group(['prefix' => 'api'], function () {
     Route::get('suggest', 'SuggestController@index');
     Route::group(['prefix' => 'list'], function () {
         Route::post('/', 'ListController@create');
-        Route::put('/{id}', 'ListController@update');
+        Route::post('/{id}/update', 'ListController@update');
         Route::get('/{id}', 'ListController@show');
         Route::get('/{id}/way', 'WayController@show');
     });
