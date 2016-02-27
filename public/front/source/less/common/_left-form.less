@@ -1,0 +1,95 @@
+.left-form {
+  display: inline-block;
+  vertical-align: top;
+  width: @width-left-form;
+  padding: 0;
+  font-size: 0;
+  overflow-y: auto;
+  .box-sizing();
+}
+
+.left-form__container {
+  font-size: 14pt;
+}
+
+.left-form__search {
+  position: relative;
+  overflow: hidden;
+
+  .input:focus {
+
+    & + .left-form__search-icon {
+      right: -100px;
+      -webkit-transition: right 1s ease;
+      -moz-transition: right 1s ease;
+      -ms-transition: right 1s ease;
+      -o-transition: right 1s ease;
+      transition: right 1s ease;
+    }
+
+    & + .left-form__close-icon {
+      bottom: 0;
+      -webkit-transition: bottom 1s ease;
+      -moz-transition: bottom 1s ease;
+      -ms-transition: bottom 1s ease;
+      -o-transition: bottom 1s ease;
+      transition: bottom 1s ease;
+    }
+  }
+}
+
+.left-form__search-icon {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 22px;
+  width: 17px;
+  height: 17px;
+  margin: auto;
+  background: transparent url('../image/search-icon.png') no-repeat;
+
+  -webkit-transition: right 1s ease;
+  -moz-transition: right 1s ease;
+  -ms-transition: right 1s ease;
+  -o-transition: right 1s ease;
+  transition: right 1s ease;
+}
+
+.left-form__close-icon {
+  position: absolute;
+  top: 0;
+  bottom: -100px;
+  right: 22px;
+  width: 17px;
+  height: 17px;
+  margin: auto;
+  background: transparent url('../image/close-icon.png') no-repeat;
+
+  -webkit-transition: bottom 1s ease;
+  -moz-transition: bottom 1s ease;
+  -ms-transition: bottom 1s ease;
+  -o-transition: bottom 1s ease;
+  transition: bottom 1s ease;
+}
+
+.search-item {
+  cursor: pointer;
+  background-color: #AAAAAA;
+  margin: 10px 10px 0px 10px;
+  padding: 10px;
+  &:hover {
+    background-color: #bebebe;
+  }
+}
+
+.left-from__empty {
+
+}
+
+
+.add {
+  background-color: green;
+  &:hover {
+    background-color: darkolivegreen;
+  }
+}
