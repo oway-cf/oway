@@ -52,8 +52,36 @@ function LeftFormController($scope, List, Suggest) {
             .$promise
             .then(function (response) {
                 $scope.searchResult = response;
-                console.log(1);
             });
+    };
+
+    $scope.pushItems = function () {
+        List.update({
+            key: $scope.list.id,
+            list: $scope.list.todo_list_items
+        });
+    };
+
+    $scope.addItem = function (item) {
+        var listItem = {
+            "key": "string",
+            "title": item.title,
+            "type": "geo_point",
+            "position": $scope.list.todo_list_items.length,
+            //"after": "string",
+            //"before": "string",
+            "lon": item.location.lot,
+            "lat": item.location.lat,
+        };
+
+        $scope.list.todo_list_items.push(listItem);
+        $scope.query = '';
+        $scope.pushItems();
+    }
+
+    $scope.delItem = function (index) {
+        $scope.list.todo_list_items.splice(index, 1);
+        $scope.pushItems();
     }
 }
 
