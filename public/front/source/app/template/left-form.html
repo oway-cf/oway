@@ -15,15 +15,20 @@
 </div>
 
 <div class="right-form__hints" ng-show="query.length != 0">
-    <div ng-repeat="item in searchResult" class = 'search-item' ng-click="addItem(item)">
+    <div ng-repeat="item in searchResult" class='search-item' ng-click="addItem(item)">
         <h4>{{item.title}}</h4>
         <p>{{item.address}}</p>
     </div>
 </div>
 
-<!--<div class="right-form__container">-->
-<!--<div class="btn">Добавить точку</div>-->
-<!--<div class="btn">Удалить точку</div>-->
-<!--<div class="btn">Удалить все точки</div>-->
-<!--<div class="btn">Построить маршрут</div>-->
-<!--</div>-->
+<div class="right-form__container" ng-if="list.todo_list_items.length > 1">
+    <!--<div class="btn">Добавить точку</div>-->
+    <!--<div class="btn">Удалить точку</div>-->
+    <!--<div class="btn">Удалить все точки</div>-->
+    <div class="btn">Построить маршрут</div>
+</div>
+
+<span class="danger-text" ng-if="list.todo_list_items.length <= 1">
+    Добавьте минимум 2 точки для построения маршрута.
+    первая точка стартовая
+</span>
