@@ -297,6 +297,20 @@
                 "after": {
                     "description": "указание порядка выполнения дел, содержит ключ другого дела",
                     "type": "string"
+                },
+                "before": {
+                    "description": "указание порядка выполнения дел, содержит ключ другого дела",
+                    "type": "string"
+                },
+                "lon": {
+                    "description": "координата в системе WGS84",
+                    "type": "number",
+                    "format": "double"
+                },
+                "lat": {
+                    "description": "координата в системе WGS84",
+                    "type": "number",
+                    "format": "double"
                 }
             }
         },
