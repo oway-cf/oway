@@ -1,17 +1,14 @@
 var app = angular.module('oWay', ['ngResource']);
-var pageWidth = document.documentElement.clientWidth,
     pageHeight = document.documentElement.clientHeight;
 var map,
     markerGroup,
     pathGroup;
-
 
 var ListData = function () {
     return {
         ways: []
     };
 }
-
 
 var ListModel = function ($resource, $location) {
     var path = 'http://' + $location.host();
@@ -33,12 +30,12 @@ var SugestModel = function ($resource, $location) {
             address: {method: 'GET', isArray: true},
         });
 }
+
 var MainController = function ($scope, ListData, List) {
     $scope.ways = ListData.ways;
     $scope.height = pageHeight - 85;
     $scope.heightList = $scope.height - 60;
 }
-
 
 function LeftFormController($scope, List, Suggest, ListData) {
     $scope.height = pageHeight - 85;
@@ -117,7 +114,6 @@ function LeftFormController($scope, List, Suggest, ListData) {
     }
 }
 
-
 function LeftFormDirective() {
     return {
         restrict: 'E',
@@ -127,8 +123,7 @@ function LeftFormDirective() {
 }
 
 function MapController ($scope){
-    $scope.width = pageWidth - 320;
-    $scope.height = pageHeight - 90;
+    $scope.height = pageHeight - 85;
 
     DG.then(function() {
         var map,
@@ -150,9 +145,10 @@ function MapController ($scope){
             map = DG.map('map', {
                 zoom: 13,
                 center: [54.98, 82.89],
-                fullscreenControl: false
+                fullscreenControl: false,
+                zoomControl: false
             });
-
+            DG.control.zoom({position: 'topright'}).addTo(map);
             map.locate({setView: true, maxZoom: 10});
         }
 
@@ -205,7 +201,6 @@ function MapController ($scope){
     });
 
 }
-
 
 var MapDirective = function () {
     return {
