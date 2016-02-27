@@ -19,9 +19,6 @@ class TodoListItems extends Migration
             $table->enum('type', ['geo_point', 'address', 'rubric']);
             $table->integer('position');
             $table->integer('after');
-            $table->foreign('todo_list_id')
-                    ->references('id')->on('todo_list')
-                    ->onDelete('cascade');
             $table->timestamps();
         });
     }
