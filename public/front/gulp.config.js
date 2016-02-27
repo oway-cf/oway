@@ -3,6 +3,7 @@ const path = require('path'), modulesPath = './node_modules';
 module.exports = {
     app: {
         index: 'app.js',
+        modules: 'modules.js',
         folder: './app'
     },
     js: {
