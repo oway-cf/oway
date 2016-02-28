@@ -150,7 +150,15 @@ function MapController($scope, ListData) {
             iconAnchor: [15, 26]
         });
         var iconMarkerPath = DG.icon({
-            iconUrl: './image/path-pin.png',
+            iconUrl: './image/pin-way.png',
+            iconSize: [28, 28]
+        });
+        var iconMarkerPathStart = DG.icon({
+            iconUrl: './image/start-pin.png',
+            iconSize: [28, 28]
+        });
+        var iconMarkerPathFinish = DG.icon({
+            iconUrl: './image/finish-pin.png',
             iconSize: [28, 28]
         });
 
