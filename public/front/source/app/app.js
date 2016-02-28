@@ -37,14 +37,13 @@ var MainController = function ($scope, ListData, List) {
     $scope.heightList = $scope.height - 60;
 }
 
-function LeftFormController($scope, List, Suggest, ListData) {
-    $scope.$watch('list', function () {
-        console.log('ch');
-    });
+function LeftFormController($scope, List, Suggest, ListData, $location) {
+
     $scope.height = pageHeight - 85;
-    listId = localStorage.getItem('listId');
+    listId = $location.path().length == 0 ? localStorage.getItem('listId') : $location.path().substr(1);
+
     $scope.query = '';
-    if (!listId) {
+    if (!listId || Number.isInteger(listId)) {
         List.create({list: {title: 'sample', items: []}})
             .$promise
             .then(function (response) {
@@ -60,6 +59,7 @@ function LeftFormController($scope, List, Suggest, ListData) {
             });
     } else {
         $scope.list = List.get({id: listId});
+        localStorage.setItem('listId', listId);
     }
 
     $scope.search = function () {
