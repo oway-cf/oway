@@ -136,7 +136,7 @@
   position: relative;
   width: 100%;
   height: 84px;
-  padding: 12px 40px 12px 22px;
+  padding: 12px 40px 12px 44px;
   border-bottom: 1px solid @grey-border;
   background-color: #ffffff;
   list-style: none;
@@ -155,6 +155,8 @@
     font-weight: 700;
     line-height: normal;
     color: #494949;
+    vertical-align: middle;
+    display: inline-block;
   }
 
   p {
@@ -176,35 +178,43 @@
     outline: none;
     background: transparent url('../image/close-icon.png') no-repeat;
     cursor: pointer;
+    -moz-opacity: 0.3;
+    opacity: 0.3;
   }
 
   .left-form__list-item-number {
     display: none;
   }
 }
-.left-form__show-router {
-  .left-form__list-item {
-    padding: 12px 48px;
-  }
 
-  .left-form__list-item-number {
-    display: inline-block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 34px;
-    height: 83px;
-    font-family: Roboto,sans-serif;
-    font-size: 30px;
-    font-weight: 700;
-    background-color: #a3bc00;
-    color: #ffffff;
-    text-align: center;
-    span {
-      display: inline-block;
-      line-height: 2.5;
-    }
-  }
+.left-form__list-item-icon {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 8px;
+  width: 28px;
+  height: 28px;
+  text-align: center;
+  margin: auto;
+}
+
+.left-form__list-item:first-child .left-form__list-item-icon {
+  background: transparent url('../image/start-pin.png') no-repeat;
+  -webkit-background-size: cover;
+  background-size: cover;
+}
+
+.left-form__list-item:last-child .left-form__list-item-icon {
+  background: transparent url('../image/finish-pin.png') no-repeat;
+  -webkit-background-size: cover;
+  background-size: cover;
+}
+
+.left-form__show-route .left-form__list-item .left-form__list-item-icon {
+  background: transparent url('../image/pin-way.png') no-repeat;
+  -webkit-background-size: cover;
+  background-size: cover;
 }
 
 
