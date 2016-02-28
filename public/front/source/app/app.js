@@ -108,6 +108,8 @@ function LeftFormController($scope, List, Suggest, ListData, $location) {
                 $scope.wayBuilding = false;
                 ListData.ways = response;
                 $scope.ways = response;
+                $scope.ways = response;
+
                 $scope.coords = response.points;
             }, function (response) {
                 $scope.wayBuilding = false;
