@@ -1,4 +1,4 @@
-var app = angular.module('oWay', ['ngResource']);
+var app = angular.module('oWay', ['ngResource', 'ui.sortable']);
 pageHeight = document.documentElement.clientHeight;
 var map,
     markerGroup,
@@ -37,11 +37,13 @@ var MainController = function ($scope, ListData, List) {
     $scope.heightList = $scope.height - 60;
 }
 
-function LeftFormController($scope, List, Suggest, ListData) {
+function LeftFormController($scope, List, Suggest, ListData, $location) {
+
     $scope.height = pageHeight - 85;
-    listId = localStorage.getItem('listId');
+    listId = $location.path().length == 0 ? localStorage.getItem('listId') : $location.path().substr(1);
+
     $scope.query = '';
-    if (!listId) {
+    if (!listId || Number.isInteger(listId)) {
         List.create({list: {title: 'sample', items: []}})
             .$promise
             .then(function (response) {
@@ -57,6 +59,7 @@ function LeftFormController($scope, List, Suggest, ListData) {
             });
     } else {
         $scope.list = List.get({id: listId});
+        localStorage.setItem('listId', listId);
     }
 
     $scope.search = function () {
@@ -65,6 +68,12 @@ function LeftFormController($scope, List, Suggest, ListData) {
             .then(function (response) {
                 $scope.searchResult = response;
             });
+    };
+
+    $scope.sortableOptions = {
+        update: function (e, ui) {
+            $scope.pushItems();
+        },
     };
 
     $scope.pushItems = function () {
@@ -97,15 +106,17 @@ function LeftFormController($scope, List, Suggest, ListData) {
     $scope.addItem = function (item) {
         console.log(item);
         var listItem = {
-            "key": "string",
-            "title": item.title,
-            "type": "geo_point",
-            "position": 0,
-            "after": 0,
-            //"before": "string",
-            "lon": item.location.lon,
-            "lat": item.location.lat,
-        };
+                "key": "string",
+                "title": item.title,
+                "type": "geo_point",
+                "position": 0,
+                "after": 0,
+                //"before": "string",
+                "lon": item.location ? item.location.lon : item.lon,
+                "lat": item.location ? item.location.lat : item.lat,
+
+            }
+            ;
         $scope.list.todo_list_items.push(listItem);
         $scope.query = '';
         $scope.pushItems();
@@ -126,7 +137,7 @@ function LeftFormDirective() {
     }
 }
 
-function MapController($scope) {
+function MapController($scope, ListData) {
     $scope.height = pageHeight - 85;
 
     DG.then(function () {
@@ -155,6 +166,32 @@ function MapController($scope) {
             });
             DG.control.zoom({position: 'topright'}).addTo(map);
             map.locate({setView: true, maxZoom: 10});
+
+            map.on('click', function (e) {
+                console.dir(e);
+                var popup = DG.popup()
+                    .setLatLng(e.latlng)
+                    .setContent('<div class="map-baloon"><input type="text" class="map-input"><button class="btn btn-ballon">ok</button></div>')
+                    .openOn(map);
+                $('.btn-ballon').click(function () {
+
+                    newItem = {
+                        after: 0,
+                        lat: e.latlng.lat,
+                        lon: e.latlng.lng,
+                        position: 0,
+                        title: $('.map-input').val(),
+                        type: "geo_point",
+                        latLon: e.latlng.lat
+                    };
+                    console.error(e.latlng);
+                    //$scope.listData.todo_list_items.push(newItem);
+                    $scope.addPoint({item: newItem});
+                    //console.log($scope);
+
+                    popup._closePopup();
+                });
+            });
         }
 
         function addMarker(latLng) {
@@ -212,31 +249,44 @@ var MapDirective = function () {
         restrict: 'E',
         //replace: true,
         scope: {
-            points: '='
+            points: '=',
+            addPoint: '&'
         },
         link: function (scope, el, attr) {
+
+
             function addLine(line) {
                 DG.Wkt.geoJsonLayer(line).addTo(pathGroup);
                 pathGroup.addTo(map);
                 map.fitBounds(pathGroup.getBounds());
             }
 
-            function addMarker(latLng) {
-                DG.marker(latLng).addTo(markerGroup);
+            function addMarker(latLng, title) {
+                var iconMarker = DG.icon({
+                    iconUrl: './image/pin-icon.png',
+                    iconSize: [30, 36],
+                    iconAnchor: [15, 26]
+                });
+
+                DG.marker(latLng, {icon: iconMarker})
+                    .addTo(markerGroup)
+                    .bindPopup(title || 'default title');
                 markerGroup.addTo(map);
                 map.fitBounds(markerGroup.getBounds());
             }
 
             scope.$watch('points', function () {
-                console.log(pathGroup);
                 if (pathGroup) {
-                    pathGroup.removeFrom(map);
-                    markerGroup.removeFrom(map);
+                    pathGroup.clearLayers();
+                    markerGroup.clearLayers();
                     for (i in scope.points.paths) {
                         addLine(scope.points.paths[i]);
                     }
                     for (i in scope.points.points) {
-                        addMarker([scope.points.points[i].lat, scope.points.points[i].lon]);
+                        addMarker(
+                            [scope.points.points[i].lat, scope.points.points[i].lon],
+                            scope.points.points[i].title
+                        );
                     }
                 }
 
