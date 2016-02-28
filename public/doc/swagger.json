@@ -128,11 +128,11 @@
                 }
             }
         },
-        "/suggest": {
+        "/suggest/address": {
             "get": {
                 "parameters": [
                     {
-                        "name": "text",
+                        "name": "query",
                         "in": "query",
                         "description": "поисковая фраза",
                         "type": "string",
