@@ -11,13 +11,20 @@ use akeinhell\RequestParams\BranchParams;
  */
 class Firms
 {
-    public static function find($query) {
+    /**
+     * @param string $query
+     * @param string $polygon
+     *
+     * @return \akeinhell\Types\GisResponse
+     */
+    public static function find($query, $polygon) {
         $firmParams = new BranchParams();
         $firmParams->setQuery($query)
             ->setRegionId(1)
             ->setFields(['items.point'])
             ->setSort('flamp_rating')
-            ->setPageSize(5);
+            ->setPageSize(2)
+            ->setPoligon($polygon);
 
         return Api2Gis::call()->BranchSearch($firmParams);
     }
