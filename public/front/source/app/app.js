@@ -173,7 +173,7 @@ function MapController($scope, ListData) {
                 console.dir(e);
                 var popup = DG.popup()
                     .setLatLng(e.latlng)
-                    .setContent('<div class="map-baloon"><input type="text" class="map-input"><button class="btn btn-ballon">ok</button></div>')
+                    .setContent('<div class="map-baloon"><input type="text" class="map-input" placeholder="Название"><button class="btn-ballon">Добавить в список</button></div>')
                     .openOn(map);
                 $('.btn-ballon').click(function () {
 
