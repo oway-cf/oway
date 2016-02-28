@@ -26,9 +26,7 @@
   position: relative;
   overflow: hidden;
 
-  .input:focus {
-
-    & + .left-form__search-icon {
+  .input:focus  + .left-form__search-icon {
       right: -100px;
       -webkit-transition: right 1s ease;
       -moz-transition: right 1s ease;
@@ -37,7 +35,7 @@
       transition: right 1s ease;
     }
 
-    & + .left-form__close-icon {
+  .input:focus  + .left-form__close-icon {
       bottom: 0;
       -webkit-transition: bottom 1s ease;
       -moz-transition: bottom 1s ease;
@@ -45,7 +43,7 @@
       -o-transition: bottom 1s ease;
       transition: bottom 1s ease;
     }
-  }
+
 }
 
 .left-from__empty {
@@ -53,7 +51,7 @@
 }
 
 .left-from__empty-icon {
-  width: 220px;
+  width: 230px;
   height: 150px;
   margin: 20px auto;
   background: transparent url('../image/empty-list.png') no-repeat 50%;
@@ -65,6 +63,7 @@
   font-size: 16px;
   font-weight: 300;
   color: @grey-text;
+  text-align: center;
 }
 
 .left-form__search-icon {
@@ -114,23 +113,15 @@
     background-position: 50%;
     background-repeat: no-repeat;
     cursor: pointer;
-
-    &:hover {
-      .box-shadow(2px 2px 10px-5px fade(#000, 50))
-    }
   }
 
   .btn-share {
     display: inline-block;
-    background-color: #008fc1;
+    background-color: #ff7300;
     background-image: url('../image/share-icon.png');
     background-position: 50%;
     background-repeat: no-repeat;
     cursor: pointer;
-
-    &:hover {
-      .box-shadow(2px 2px 10px-5px fade(#000, 50))
-    }
   }
 }
 
@@ -151,6 +142,12 @@
   list-style: none;
   font-family: Roboto, sans-serif;
   .box-sizing();
+
+  &.ui-sortable-helper {
+    cursor: -webkit-grabbing;
+    cursor: -moz-grabbing;
+    cursor: grabbing;
+  }
 
   h4 {
     margin: 6px 0px;
