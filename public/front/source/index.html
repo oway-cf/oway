@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>oWay - оптимизатор поездок по городу</title>
+    <link rel="shortcut icon" href="./image/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="./image/favicon.ico" type="image/x-icon">
     <link href="//malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,100,100italic,400italic,500,500italic,700,700italic,900,900italic"
           rel="stylesheet" type="text/css">
@@ -29,6 +31,21 @@
     </div>
 </div>
 
+<div class="modal" style="display: none">
+    <div class="modal-header">
+        <h4>Ваш QR-Код</h4>
+    </div>
+    <div class="modal-body">
+        <p>lorem ipsum</p>
+        <img src="" alt="">
+    </div>
+    <div class="modal-footer">
+        <div class="pluso" data-background="transparent"
+             data-options="big,round,line,horizontal,counter,theme=01"
+             data-services="vkontakte,facebook,odnoklassniki,twitter"></div>
+    </div>
+</div>
+
 <!--Connection scripts-->
 
 <script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
@@ -40,5 +57,14 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script src="//malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="app.js"></script>
+<script type="text/javascript">(function() {
+    if (window.pluso)if (typeof window.pluso.start == "function") return;
+    if (window.ifpluso==undefined) { window.ifpluso = 1;
+        var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
+        s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true;
+        s.src = ('https:' == window.location.protocol ? 'https' : 'http')  + '://share.pluso.ru/pluso-like.js';
+        var h=d[g]('body')[0];
+        h.appendChild(s);
+    }})();</script>
 </body>
 </html>
