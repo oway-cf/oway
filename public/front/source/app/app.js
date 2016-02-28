@@ -157,10 +157,12 @@ function MapController($scope, ListData) {
 
         function initMaps() {
             map = DG.map('map', {
-                zoom: 13,
+                zoom: 10,
                 center: [54.98, 82.89],
                 fullscreenControl: false,
-                zoomControl: false
+                zoomControl: false,
+                minZoom: 10,
+                maxZoom: 20
             });
             DG.control.zoom({position: 'topright'}).addTo(map);
             map.locate({setView: true, maxZoom: 10});
