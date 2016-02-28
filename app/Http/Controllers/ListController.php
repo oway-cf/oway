@@ -89,9 +89,4 @@ class ListController extends Controller
     {
         return TodoList::where(['id' => $id])->with(['todoListItems'])->firstOrFail();
     }
-
-    public function buildWay($id)
-    {
-        throw new Exception('Not implemented');
-    }
 }
