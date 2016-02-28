@@ -13,12 +13,14 @@ class Way
             Graph::calculateItemsPoints($list->todoListItems)
         );
 
+        $routeData = static::getGisRoute($itemsWithPoint);
+
         return [
-            'total_distance' => 123,
-            'total_duration' => 23,
+            'total_distance' => current(current($routeData)->items)->total_distance,
+            'total_duration' => current(current($routeData)->items)->total_duration,
             'points'         => $itemsWithPoint,
             'bad_points'     => $itemsWithoutPoint,
-            'paths'          => static::recursivePrepareData(static::getGisRoute($itemsWithPoint)),
+            'paths'          => static::recursivePrepareData($routeData),
         ];
     }
 
