@@ -162,11 +162,14 @@ class Graph
                 $rubricName = array_get($getRubric, 'features.0.properties.CompanyMetaData.Categories.0.name');
 
                 if ($rubricName) {
-                    $firmList   = static::prepareData(Firms::find($rubricName, $polygon)->getItems());
-                    $firm       = array_get($firmList, '1') ?: array_get($firmList, '0');
-                    $point      = array_get($firm, 'point', []);
-                    $item->lon  = array_get($point, 'lon', null);
-                    $item->lat  = array_get($point, 'lat', null);
+                    $firmList      = static::prepareData(Firms::find($rubricName, $polygon)->getItems());
+                    $firm          = array_get($firmList, '1') ?: array_get($firmList, '0');
+                    $addressName   = array_get($firm, 'address_name', '');
+                    $firmName      = array_get($firm, 'name', '');
+                    $point         = array_get($firm, 'point', []);
+                    $item->lon     = array_get($point, 'lon', null);
+                    $item->lat     = array_get($point, 'lat', null);
+                    $item->address = sprintf('%s (%s)', $firmName, $addressName);
                 }
             }
 
