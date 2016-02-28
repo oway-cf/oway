@@ -81,7 +81,8 @@ class YandexConnector {
                 'apikey' => getenv(static::API_KEY),
                 'lang'   => static::LANG,
                 'text'   => $this->query,
-                'type'   => $this->type
+                'type'   => $this->type,
+                'results'=> 1
             ]
         ]);
 
@@ -108,7 +109,7 @@ class YandexConnector {
      */
     private function formatResponse($response)
     {
-        $data = json_decode($response->getBody());
+        $data = json_decode($response);
 
         if ($data === null) {
             throw  new \Exception('Incorrect response format');

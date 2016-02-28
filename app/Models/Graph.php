@@ -3,8 +3,13 @@
 namespace App\Models;
 
 use akeinhell\Api2Gis;
+use akeinhell\RequestParams\BranchParams;
 use akeinhell\RequestParams\CarRouteParams;
+use akeinhell\RequestParams\RubricParams;
+use App\API\YandexConnector;
 use Cache;
+use akeinhell\Exceptions\GisRequestException;
+use App\Models\Firms;
 
 class Graph
 {
@@ -48,9 +53,60 @@ class Graph
         return [$itemsWithPoint, $itemsWithoutPoint];
     }
 
-    public static function findBestPointForCategoryInArea($area, $itemsWithoutPoint)
+    /**
+     * @param $itemsWithoutPoint
+     * @param $polygon
+     *
+     * @return mixed
+     * @throws GisRequestException
+     * @throws \HttpResponseException
+     */
+    public static function findBestPointForCategoryInArea($itemsWithoutPoint, $polygon)
     {
-        return [];
+        try {
+            foreach ($itemsWithoutPoint as $item) {
+                $getRubric = static::prepareData(YandexConnector::init()->setQuery($item->title)
+                                                    ->setType(YandexConnector::BIZ_TYPE)
+                                                    ->makeRequest());
+
+                $rubricName = array_get($getRubric, 'features.0.properties.CompanyMetaData.Categories.0.name');
+
+                if ($rubricName) {
+                    $firmList   = static::prepareData(Firms::find($rubricName, $polygon)->getItems());
+                    $firm       = array_get($firmList, '1') ?: array_get($firmList, '0');
+                    $point      = array_get($firm, 'point', []);
+                    $item->lon  = array_get($point, 'lon', null);
+                    $item->lat  = array_get($point, 'lat', null);
+                    $item->save();
+                }
+            }
+
+            return $itemsWithoutPoint;
+        } catch (GisRequestException $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * @param mixed $items
+     *
+     * @return array
+     */
+    public static function prepareData($items)
+    {
+        if(is_object($items)) {
+            $items = (array) $items;
+        }
+
+        if(is_array($items)) {
+            $new = [];
+
+            foreach($items as $key => $val) {
+                $new[$key] = static::prepareData($val);
+            }
+        } else $new = $items;
+
+        return $new;
     }
 
     protected static function sortGraph($listItems)
