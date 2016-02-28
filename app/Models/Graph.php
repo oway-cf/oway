@@ -302,7 +302,6 @@ class Graph
             }
             Cache::put($cacheKey, $edgeCost, 30);
         }
-        $test = 0;
 
         return $edgeCost;
     }
