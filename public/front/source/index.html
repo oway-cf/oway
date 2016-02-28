@@ -17,10 +17,10 @@
         <!--<span class="header__logo-slogan">Slogan every body</span>-->
     </div>
     <div class="header__nav">
-        <a class="header__nav-link"data-toggle="modal" data-target="#myModal">Поделиться</a>
+        <a class="header__nav-link" data-toggle="modal" data-target="#myModal">Поделиться</a>
         <a href="http://oway.cf/doc/" class="header__nav-link" target="_blank">Документация</a>
         <a href="http://oway.cf/android/OWay.apk" class="header__nav-link" target="_blank">Скачать</a>
-        <a href="#warning-modal" class="header__login-btn">Войти</a>
+        <a class="header__login-btn" data-toggle="modal" data-target="#warningModal">Войти</a>
     </div>
 </header>
 
@@ -37,6 +37,20 @@
     </div>
 </div>
 
+<div class="modal fade" tabindex="-1" role="dialog" id="warningModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" >
+        <div class="modal-content" >
+            <div class="modal-header">
+                <h4 class="modal-title">Ой, не переживайте!</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal-text">Функционал пока не реализован</div>
+
+                <img src="./image/warning.png" alt="">
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <div class="modal fade" tabindex="-1" role="dialog" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" >
