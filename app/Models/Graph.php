@@ -167,7 +167,6 @@ class Graph
                     $point      = array_get($firm, 'point', []);
                     $item->lon  = array_get($point, 'lon', null);
                     $item->lat  = array_get($point, 'lat', null);
-                    $item->save();
                 }
             }
 
@@ -300,6 +299,7 @@ class Graph
             }
             Cache::put($cacheKey, $edgeCost, 30);
         }
+        $test = 0;
 
         return $edgeCost;
     }
