@@ -91,6 +91,7 @@ function LeftFormController($scope, List, Suggest, ListData, $location) {
             key: $scope.list.id,
             list: {
                 title: 'abrvalg',
+                address: $scope.list.address,
                 items: $scope.list.todo_list_items
             }
         });
@@ -185,6 +186,7 @@ function MapController($scope, ListData) {
                         lon: e.latlng.lng,
                         position: 0,
                         title: $('.map-input').val(),
+                        address: $('.map-input').val(),
                         type: "geo_point",
                         latLon: e.latlng.lat
                     };
