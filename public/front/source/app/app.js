@@ -45,7 +45,7 @@ function LeftFormController($scope, List, Suggest, ListData, $location) {
     $scope.height = pageHeight - 85;
     $scope.coords = ListData.coords;
     listId = $location.path().length == 0 ? localStorage.getItem('listId') : $location.path().substr(1);
-
+    SHARE_ID = listId;
     $scope.query = '';
     if (!listId || Number.isInteger(listId)) {
         List.create({list: {title: 'sample', items: []}})
@@ -155,23 +155,6 @@ function MapController($scope, ListData) {
         markerGroup = DG.featureGroup();
         markerPathGroup = DG.featureGroup();
         pathGroup = DG.featureGroup();
-        var iconMarker = DG.icon({
-            iconUrl: './image/pin-icon.png',
-            iconSize: [30, 36],
-            iconAnchor: [15, 26]
-        });
-        var iconMarkerPath = DG.icon({
-            iconUrl: './image/pin-way.png',
-            iconSize: [28, 28]
-        });
-        var iconMarkerPathStart = DG.icon({
-            iconUrl: './image/start-pin.png',
-            iconSize: [28, 28]
-        });
-        var iconMarkerPathFinish = DG.icon({
-            iconUrl: './image/finish-pin.png',
-            iconSize: [28, 28]
-        });
 
 
         function initMaps() {
@@ -190,7 +173,7 @@ function MapController($scope, ListData) {
                 console.dir(e);
                 var popup = DG.popup()
                     .setLatLng(e.latlng)
-                    .setContent('<div class="map-baloon"><input type="text" class="map-input"><button class="btn btn-ballon">ok</button></div>')
+                    .setContent('<div class="map-baloon"><input type="text" class="map-input" placeholder="Название"><button class="btn-ballon">Добавить в список</button></div>')
                     .openOn(map);
                 $('.btn-ballon').click(function () {
 
@@ -279,7 +262,7 @@ var MapDirective = function () {
                 map.fitBounds(pathGroup.getBounds());
             }
 
-            function addMarker(latLng, title) {
+            function addMarker(latLng, title, pos) {
                 if (!markerGroup) {
                     return console.warn('markerGroup undefinde');
                 }
@@ -288,8 +271,29 @@ var MapDirective = function () {
                     iconSize: [30, 36],
                     iconAnchor: [15, 26]
                 });
+                var iconMarkerPath = DG.icon({
+                    iconUrl: './image/pin-way.png',
+                    iconSize: [28, 28]
+                });
+                var iconMarkerPathStart = DG.icon({
+                    iconUrl: './image/start-pin.png',
+                    iconSize: [28, 28]
+                });
+                var iconMarkerPathFinish = DG.icon({
+                    iconUrl: './image/finish-pin.png',
+                    iconSize: [28, 28]
+                });
 
-                DG.marker(latLng, {icon: iconMarker})
+                var icon = iconMarker;
+                switch (pos) {
+                    case 1:
+                        icon = iconMarkerPathStart;
+                        break;
+                    case 2:
+                        icon = iconMarkerPathFinish;
+                        break;
+                }
+                DG.marker(latLng, {icon: icon})
                     .addTo(markerGroup)
                     .bindPopup(title || 'default title');
                 markerGroup.addTo(map);
@@ -325,10 +329,19 @@ var MapDirective = function () {
                     for (i in scope.points.paths) {
                         addLine(scope.points.paths[i]);
                     }
-                    for (i in scope.points.points) {
+                    for (var i in scope.points.points) {
+                        var pos = 0;
+                        if (i == 0) {
+                            pos = 1;
+                        }
+                        if (i == scope.points.points.length - 1) {
+                            pos = 2;
+                        }
+                        console.log(i, pos);
                         addMarker(
                             [scope.points.points[i].lat, scope.points.points[i].lon],
-                            scope.points.points[i].title
+                            scope.points.points[i].title,
+                            pos
                         );
                     }
                 }
