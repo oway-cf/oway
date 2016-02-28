@@ -3,9 +3,18 @@
 namespace App\Models;
 
 use akeinhell\Api2Gis;
+use akeinhell\RequestParams\BranchParams;
 use akeinhell\RequestParams\CarRouteParams;
+use akeinhell\RequestParams\RubricParams;
+use App\API\YandexConnector;
 use Cache;
+use akeinhell\Exceptions\GisRequestException;
+use App\Models\Firms;
 
+/**
+ * Class Graph
+ * @package App\Models
+ */
 class Graph
 {
     /**
@@ -15,7 +24,182 @@ class Graph
      */
     public static function calculateItemsPoints($listItems = [])
     {
+        list($itemsWithPoint, $itemsWithoutPoint) = static::separationItems($listItems);
+
+        $area        = static::getAreaByPoint($itemsWithPoint);
+        $updatedItem = static::findBestPointForCategoryInArea($area, $itemsWithoutPoint);
+
         return static::sortGraph($listItems);
+    }
+
+    /**
+     * @return string
+     */
+    public static function getAreaByPoint($listItems)
+    {
+        $items    = static::sortGraph($listItems);
+        $polygons = [];
+        for ($i = 0; $i < count($items) - 1; $i++) {
+            $polygons[] = static::getPolygonAroundPoints($items[$i], $items[$i + 1]);
+        }
+
+        return "POLYGON(" . implode(",", $polygons) . ")";
+    }
+
+    private static function getPolygonAroundPoints($point1, $point2)
+    {
+        $points = [];
+        $delta  = 0.01;
+
+        $x1 = (double)$point1->lon;
+        $y1 = (double)$point1->lat;
+        $x2 = (double)$point2->lon;
+        $y2 = (double)$point2->lat;
+        if ($x1 > $x2) {
+            $tmp1 = $x1;
+            $tmp2 = $y1;
+            $x1   = $x2;
+            $y1   = $y2;
+            $x2   = $tmp1;
+            $y2   = $tmp2;
+        }
+
+        if ($y1 < $y2) {
+            $x        = $x1 - $delta;
+            $y        = $y1 - $delta;
+            $points[] = "{$x} {$y}";
+
+            $x        = $x1 - $delta;
+            $y        = $y1 + $delta;
+            $points[] = "{$x} {$y}";
+
+            $x        = $x2 - $delta;
+            $y        = $y2 + $delta;
+            $points[] = "{$x} {$y}";
+
+            $x        = $x2 + $delta;
+            $y        = $y2 + $delta;
+            $points[] = "{$x} {$y}";
+
+            $x        = $x2 + $delta;
+            $y        = $y2 - $delta;
+            $points[] = "{$x} {$y}";
+
+            $x        = $x1 + $delta;
+            $y        = $y1 - $delta;
+            $points[] = "{$x} {$y}";
+
+            $x        = $x1 - $delta;
+            $y        = $y1 - $delta;
+            $points[] = "{$x} {$y}";
+        } else {
+            $x        = $x1 - $delta;
+            $y        = $y1 - $delta;
+            $points[] = "{$x} {$y}";
+
+            $x        = $x1 - $delta;
+            $y        = $y1 + $delta;
+            $points[] = "{$x} {$y}";
+
+            $x        = $x1 + $delta;
+            $y        = $y1 + $delta;
+            $points[] = "{$x} {$y}";
+
+            $x        = $x2 + $delta;
+            $y        = $y2 + $delta;
+            $points[] = "{$x} {$y}";
+
+            $x        = $x2 + $delta;
+            $y        = $y2 - $delta;
+            $points[] = "{$x} {$y}";
+
+            $x        = $x2 - $delta;
+            $y        = $y2 - $delta;
+            $points[] = "{$x} {$y}";
+
+            $x        = $x1 - $delta;
+            $y        = $y1 - $delta;
+            $points[] = "{$x} {$y}";
+        }
+
+        return '(' . implode(',', $points) . ')';
+    }
+
+    /**
+     * @param TodoListItem[] $listItems
+     *
+     * @return array
+     */
+    public static function separationItems($listItems)
+    {
+        $itemsWithPoint    = [];
+        $itemsWithoutPoint = [];
+
+        foreach ($listItems as $item) {
+            if ($item->lat && $item->lon) {
+                $itemsWithPoint[] = $item;
+            } else {
+                $itemsWithoutPoint[] = $item;
+            }
+        }
+
+        return [$itemsWithPoint, $itemsWithoutPoint];
+    }
+
+    /**
+     * @param $itemsWithoutPoint
+     * @param $polygon
+     *
+     * @return mixed
+     * @throws GisRequestException
+     * @throws \HttpResponseException
+     */
+    public static function findBestPointForCategoryInArea($itemsWithoutPoint, $polygon)
+    {
+        try {
+            foreach ($itemsWithoutPoint as $item) {
+                $getRubric = static::prepareData(YandexConnector::init()->setQuery($item->title)
+                                                    ->setType(YandexConnector::BIZ_TYPE)
+                                                    ->makeRequest());
+
+                $rubricName = array_get($getRubric, 'features.0.properties.CompanyMetaData.Categories.0.name');
+
+                if ($rubricName) {
+                    $firmList   = static::prepareData(Firms::find($rubricName, $polygon)->getItems());
+                    $firm       = array_get($firmList, '1') ?: array_get($firmList, '0');
+                    $point      = array_get($firm, 'point', []);
+                    $item->lon  = array_get($point, 'lon', null);
+                    $item->lat  = array_get($point, 'lat', null);
+                    $item->save();
+                }
+            }
+
+            return $itemsWithoutPoint;
+        } catch (GisRequestException $e) {
+            throw $e;
+        }
+    }
+
+    /**
+     * @param mixed $items
+     *
+     * @return array
+     */
+    public static function prepareData($items)
+    {
+        if(is_object($items)) {
+            $items = (array) $items;
+        }
+
+        if(is_array($items)) {
+            $new = [];
+
+            foreach($items as $key => $val) {
+                $new[$key] = static::prepareData($val);
+            }
+        } else $new = $items;
+
+        return $new;
     }
 
     protected static function sortGraph($listItems)
@@ -39,11 +223,11 @@ class Graph
             $way[]   = (count($listItems) - 1);
             $wayCost = 0;
             for ($j = 0; $j < count($way) - 1; $j++) {
-                $edge = static::getEdge($listItems[$way[$i]], $listItems[$way[$i + 1]]);
+                $edge = static::getEdge($listItems[$way[$j]], $listItems[$way[$j + 1]]);
                 $wayCost += $edge[0]->items[0]->total_distance;
             }
             if ($wayCost < $cost) {
-                $cost = $wayCost;
+                $cost    = $wayCost;
                 $initial = $way;
             }
         }
@@ -119,6 +303,12 @@ class Graph
         return $edge;
     }
 
+    /**
+     * @param $point1
+     * @param $point2
+     *
+     * @return string
+     */
     protected static function getEdgeCacheKey($point1, $point2)
     {
         $key = sprintf('edge_%s_%s_to_%s_%s', $point1->lon, $point1->lat, $point2->lon, $point2->lat);

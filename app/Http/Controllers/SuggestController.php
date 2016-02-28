@@ -74,7 +74,7 @@ class SuggestController extends Controller
                 $lon      = null;
                 if (preg_match('/point/i', $item->geometry->selection)) {
                     $location = preg_replace('/point\((.*?)\)/i', '$1', $item->geometry->selection);
-                    list($lat, $lon) = explode(' ', $location);
+                    list($lon, $lat) = explode(' ', $location);
                 }
                 if (!$location) {
                     continue;
@@ -85,8 +85,8 @@ class SuggestController extends Controller
                     'type'     => 'address',
                     "address"  => $item->name,
                     "location" => [
+                        'lon' => $lon,
                         'lat' => $lat,
-                        'lon' => $lon
                     ]
                 ];
             }

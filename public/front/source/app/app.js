@@ -1,5 +1,5 @@
 var app = angular.module('oWay', ['ngResource']);
-    pageHeight = document.documentElement.clientHeight;
+pageHeight = document.documentElement.clientHeight;
 var map,
     markerGroup,
     pathGroup;
@@ -109,7 +109,8 @@ function LeftFormController($scope, List, Suggest, ListData) {
     }
 
     $scope.delItem = function (index) {
-        $scope.list.items.splice(index, 1);
+
+        $scope.list.todo_list_items.splice(index, 1);
         $scope.pushItems();
     }
 }
@@ -122,14 +123,13 @@ function LeftFormDirective() {
     }
 }
 
-function MapController ($scope){
+function MapController($scope) {
     $scope.height = pageHeight - 85;
 
-    DG.then(function() {
-        var map,
-            markerGroup = DG.featureGroup(),
-            markerPathGroup = DG.featureGroup(),
-            pathGroup = DG.featureGroup();
+    DG.then(function () {
+        markerGroup = DG.featureGroup();
+        markerPathGroup = DG.featureGroup();
+        pathGroup = DG.featureGroup();
         var iconMarker = DG.icon({
             iconUrl: './image/pin-icon.png',
             iconSize: [30, 36],
@@ -141,7 +141,7 @@ function MapController ($scope){
         });
 
 
-        function initMaps (){
+        function initMaps() {
             map = DG.map('map', {
                 zoom: 13,
                 center: [54.98, 82.89],
@@ -152,19 +152,19 @@ function MapController ($scope){
             map.locate({setView: true, maxZoom: 10});
         }
 
-        function addMarker (latLng){
-            DG.marker(latLng,{icon: iconMarker}).addTo(markerGroup);
+        function addMarker(latLng) {
+            DG.marker(latLng, {icon: iconMarker}).addTo(markerGroup);
             markerGroup.addTo(map);
             map.fitBounds(markerGroup.getBounds());
         }
 
-        function addMarkerPath (latLng){
-            DG.marker(latLng,{icon: iconMarkerPath}).addTo(markerPathGroup);
+        function addMarkerPath(latLng) {
+            DG.marker(latLng, {icon: iconMarkerPath}).addTo(markerPathGroup);
             markerPathGroup.addTo(map);
             map.fitBounds(markerPathGroup.getBounds());
         }
 
-        function outPath (coordinates) {
+        function outPath(coordinates) {
             var color_path = ["#ffffff", "#ff4600"],
                 weight_path = [12, 6];
             for (var i = 0; i < 2; i++) {
@@ -177,7 +177,7 @@ function MapController ($scope){
             map.fitBounds(pathGroup.getBounds());
         }
 
-        function clearMap (){
+        function clearMap() {
             console.log("clear");
             pathGroup.removeFrom(map);
             markerGroup.removeFrom(map);
@@ -223,14 +223,15 @@ var MapDirective = function () {
             }
 
             scope.$watch('points', function () {
+                console.log(pathGroup);
                 if (pathGroup) {
                     pathGroup.removeFrom(map);
                     markerGroup.removeFrom(map);
-                    for (i in scope.points.path) {
-                        addLine(scope.points.path[i]);
+                    for (i in scope.points.paths) {
+                        addLine(scope.points.paths[i]);
                     }
                     for (i in scope.points.points) {
-                        addMarker([scope.points.points[i][1], scope.points.points[i][0]]);
+                        addMarker([scope.points.points[i].lat, scope.points.points[i].lon]);
                     }
                 }
 
