@@ -275,8 +275,8 @@ var MapDirective = function () {
 
             scope.$watch('points', function () {
                 if (pathGroup) {
-                    pathGroup.removeFrom(map);
-                    markerGroup.removeFrom(map);
+                    pathGroup.clearLayers();
+                    markerGroup.clearLayers();
                     for (i in scope.points.paths) {
                         addLine(scope.points.paths[i]);
                     }
