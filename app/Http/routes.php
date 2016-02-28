@@ -17,9 +17,6 @@ Route::get('/', function () {
 
 Route::group(['prefix' => 'api'], function () {
     Route::get('suggest/address/{query?}', 'SuggestController@address');
-    Route::get('suggest/keyword', 'SuggestController@keyword');
-    Route::get('suggest/firm', 'SuggestController@firms');
-    Route::get('suggest', 'SuggestController@index');
     Route::group(['prefix' => 'list'], function () {
         Route::post('/', 'ListController@create');
         Route::post('/{id}/update', 'ListController@update');
