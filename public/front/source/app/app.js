@@ -297,6 +297,7 @@ var MapDirective = function () {
                         icon = iconMarkerPathFinish;
                         break;
                 }
+                console.log('qqqqqqq', addr);
                 DG.marker(latLng, {icon: icon})
                     .addTo(markerGroup)
                     .bindPopup(title + '</br>' + addr);
@@ -341,12 +342,12 @@ var MapDirective = function () {
                         if (i == scope.points.points.length - 1) {
                             pos = 2;
                         }
-                        console.log(i, pos);
+                        console.log(7777777, scope.points.points[i].address);
                         addMarker(
                             [scope.points.points[i].lat, scope.points.points[i].lon],
                             scope.points.points[i].title,
                             pos,
-                            scope.points.points[i].address
+                            scope.points.points[i].address || ''
                         );
                     }
                 }
