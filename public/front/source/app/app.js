@@ -45,7 +45,7 @@ function LeftFormController($scope, List, Suggest, ListData, $location) {
     $scope.height = pageHeight - 85;
     $scope.coords = ListData.coords;
     listId = $location.path().length == 0 ? localStorage.getItem('listId') : $location.path().substr(1);
-
+    SHARE_ID = listId;
     $scope.query = '';
     if (!listId || Number.isInteger(listId)) {
         List.create({list: {title: 'sample', items: []}})
