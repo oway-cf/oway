@@ -264,7 +264,7 @@ var MapDirective = function () {
                 map.fitBounds(pathGroup.getBounds());
             }
 
-            function addMarker(latLng, title, pos) {
+            function addMarker(latLng, title, pos, addr) {
                 if (!markerGroup) {
                     return console.warn('markerGroup undefinde');
                 }
@@ -297,7 +297,7 @@ var MapDirective = function () {
                 }
                 DG.marker(latLng, {icon: icon})
                     .addTo(markerGroup)
-                    .bindPopup(title || 'default title');
+                    .bindPopup(title + '</br>' + addr);
                 markerGroup.addTo(map);
                 map.fitBounds(markerGroup.getBounds());
             }
@@ -343,7 +343,8 @@ var MapDirective = function () {
                         addMarker(
                             [scope.points.points[i].lat, scope.points.points[i].lon],
                             scope.points.points[i].title,
-                            pos
+                            pos,
+                            scope.points.points[i].address
                         );
                     }
                 }
