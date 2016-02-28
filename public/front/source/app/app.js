@@ -1,4 +1,4 @@
-var app = angular.module('oWay', ['ngResource']);
+var app = angular.module('oWay', ['ngResource', 'ui.sortable']);
 pageHeight = document.documentElement.clientHeight;
 var map,
     markerGroup,
@@ -65,6 +65,12 @@ function LeftFormController($scope, List, Suggest, ListData) {
             .then(function (response) {
                 $scope.searchResult = response;
             });
+    };
+
+    $scope.sortableOptions = {
+        update: function(e, ui) {
+            $scope.pushItems();
+        },
     };
 
     $scope.pushItems = function () {
