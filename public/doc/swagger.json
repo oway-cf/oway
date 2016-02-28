@@ -5,8 +5,8 @@
         "title": "oWay Rest API",
         "description": "**Backend для проекта oWay (*оптимизация поездок по городу*)**\n\nРеализуемого на городском [хакатоне](http://hackathon.2gis.ru/)\n"
     },
-    "host": "oway.online",
-    "basePath": "/rest/",
+    "host": "oway.cf",
+    "basePath": "/api/",
     "schemes": [
         "http"
     ],
