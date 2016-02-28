@@ -36,13 +36,17 @@
         <h4>Ваш QR-Код</h4>
     </div>
     <div class="modal-body">
-        <p>lorem ipsum</p>
-        <img src="" alt="">
+        <p></p>
+        <img ng-src="http://api.qrserver.com/v1/create-qr-code/?color=000000&amp;bgcolor=FFFFFF&amp;data=http%3A%2F%2Foway.cf%2F%23%2F{{list.id}}&amp;qzone=1&amp;margin=0&amp;size=400x400&amp;ecc=L" alt="">
     </div>
     <div class="modal-footer">
-        <div class="pluso" data-background="transparent"
-             data-options="big,round,line,horizontal,counter,theme=01"
-             data-services="vkontakte,facebook,odnoklassniki,twitter"></div>
+        <div class="pluso"
+             data-background="transparent"
+             data-options="big,round,line,horizontal,counter,theme=04"
+             data-services="vkontakte,odnoklassniki,facebook,twitter"
+             ng-attr-data-url="{{'http://oway.cf/#/'+list.id}}"
+             data-title="oWay - Оптимизатор поездок по городу"
+             data-description="Оптимизатор поездок по городу"></div>
     </div>
 </div>
 
@@ -57,14 +61,18 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script src="//malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="app.js"></script>
-<script type="text/javascript">(function() {
+<script type="text/javascript">(function () {
     if (window.pluso)if (typeof window.pluso.start == "function") return;
-    if (window.ifpluso==undefined) { window.ifpluso = 1;
+    if (window.ifpluso == undefined) {
+        window.ifpluso = 1;
         var d = document, s = d.createElement('script'), g = 'getElementsByTagName';
-        s.type = 'text/javascript'; s.charset='UTF-8'; s.async = true;
-        s.src = ('https:' == window.location.protocol ? 'https' : 'http')  + '://share.pluso.ru/pluso-like.js';
-        var h=d[g]('body')[0];
+        s.type = 'text/javascript';
+        s.charset = 'UTF-8';
+        s.async = true;
+        s.src = ('https:' == window.location.protocol ? 'https' : 'http') + '://share.pluso.ru/pluso-like.js';
+        var h = d[g]('body')[0];
         h.appendChild(s);
-    }})();</script>
+    }
+})();</script>
 </body>
 </html>
