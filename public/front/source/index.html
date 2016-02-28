@@ -33,7 +33,7 @@
 <div class="loader-wrapper" ng-show="wayBuilding">
     <div class="loader-route">
         <img class="pulse" src="image/load-icon.png"/>
-        <p>LOADING MEUW MEUW…</p>
+        <p>Загружаем...</p>
     </div>
 </div>
 
@@ -42,13 +42,14 @@
     <div class="modal-dialog" >
         <div class="modal-content" >
             <div class="modal-header">
-                <h4 class="modal-title">Ваш QR-Код</h4>
-                <div>Скопируйте ссылку на ваш маршрут и поделитесь ей с друзьями для совместного приключения</div>
-                <pre>{{'http://oway.cf/#/'+list.id}}</pre>
+                <h4 class="modal-title">Поделиться ссылкой</h4>
             </div>
             <div class="modal-body">
+                <div class="modal-text">Скопируйте ссылку на ваш маршрут и поделитесь ей с друзьями для совместного приключения</div>
+
                 <img ng-src="http://api.qrserver.com/v1/create-qr-code/?color=000000&amp;bgcolor=FFFFFF&amp;data=http%3A%2F%2Foway.cf%2F%23%2F{{list.id}}&amp;qzone=1&amp;margin=0&amp;size=400x400&amp;ecc=L"
                      alt="">
+                <div class="modal-link">{{'http://oway.cf/#/'+list.id}}</div>
             </div>
             <div class="modal-footer">
                 <div class="pluso"
