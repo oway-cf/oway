@@ -33,7 +33,7 @@
             </div>
         </div>
     </div>
-    <div class="left-form__ways-info" ng-if="ways.total_distance">
+    <div class="left-form__ways-info" ng-hide="ways.total_distance">
         <div class="dist"> {{(ways.total_distance / 1000)| number:0}} км.</div>
         <div class="time"> {{(ways.total_duration / 60) | number:0 }} мин.</div>
     </div>
