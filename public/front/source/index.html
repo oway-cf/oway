@@ -164,7 +164,8 @@
         <span class="header__logo-slogan">Slogan every body</span>
     </div>
     <div class="header__nav">
-        <a href="http://oway.cf/doc/" class="header__nav-link" target="_blank" e>Документация</a>
+        <a href="#" class="header__nav-link"data-toggle="modal" data-target="#myModal">Поделиться</a>
+        <a href="http://oway.cf/doc/" class="header__nav-link" target="_blank">Документация</a>
         <a href="#download" class="header__nav-link">Скачать</a>
         <a href="#warning-modal" class="header__login-btn">Войти</a>
     </div>
@@ -180,26 +181,13 @@
     </div>
 </div>
 
-<div class="modal" style="display: none">
-    <div class="modal-header">
-        <h4></h4>
-    </div>
-    <div class="modal-body">
-        <p></p>
 
-    </div>
-    <div class="modal-footer">
-
-    </div>
-</div>
-
-<div class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
+<div class="modal fade" tabindex="-1" role="dialog" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" >
+        <div class="modal-content" >
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Ваш QR-Код</h4>
+                <pre>{{'http://oway.cf/#/'+list.id}}</pre>
             </div>
             <div class="modal-body">
                 <img ng-src="http://api.qrserver.com/v1/create-qr-code/?color=000000&amp;bgcolor=FFFFFF&amp;data=http%3A%2F%2Foway.cf%2F%23%2F{{list.id}}&amp;qzone=1&amp;margin=0&amp;size=400x400&amp;ecc=L"
@@ -210,8 +198,8 @@
                      data-background="transparent"
                      data-options="big,round,line,horizontal,counter,theme=04"
                      data-services="vkontakte,odnoklassniki,facebook,twitter"
-                     ng-attr-data-url="{{'http://oway.cf/#/'+list.id}}"
-                     data-title="oWay - Оптимизатор поездок по городу"
+                     data-url="{{'http://oway.cf/#/'+JSON.stringify(list.id)}}"
+                     ng-attr-data-title="oWay - Оптимизатор поездок по городу"
                      data-description="Оптимизатор поездок по городу"></div>
             </div>
         </div><!-- /.modal-content -->
@@ -229,7 +217,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script src="//malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="app.js"></script>
-<script type="text/javascript">(function () {
+<script type="text/javascript">
+    var SHARE_ID;
+    (function () {
     if (window.pluso)if (typeof window.pluso.start == "function") return;
     if (window.ifpluso == undefined) {
         window.ifpluso = 1;
@@ -245,5 +235,11 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
         integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
         crossorigin="anonymous"></script>
+
+<script>
+    $('#myModal').on('shown.bs.modal', function () {
+       $('.pluso').data('url', 'http://oway.cf/#/'+SHARE_ID);
+    })
+</script>
 </body>
 </html>
