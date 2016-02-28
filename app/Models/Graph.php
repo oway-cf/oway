@@ -11,6 +11,10 @@ use Cache;
 use akeinhell\Exceptions\GisRequestException;
 use App\Models\Firms;
 
+/**
+ * Class Graph
+ * @package App\Models
+ */
 class Graph
 {
     /**
@@ -28,13 +32,102 @@ class Graph
         return static::sortGraph($listItems);
     }
 
-    public static function getAreaByPoint()
+    /**
+     * @return string
+     */
+    public static function getAreaByPoint($listItems)
     {
-        return "POLYGON((82.91259527206421 55.0614369017519,82.90572881698608 55.05902823221974,82.91521310806274 55.05580825372468,82.91259527206421 55.0614369017519))";
+        $items    = static::sortGraph($listItems);
+        $polygons = [];
+        for ($i = 0; $i < count($items) - 1; $i++) {
+            $polygons[] = static::getPolygonAroundPoints($items[$i], $items[$i + 1]);
+        }
+
+        return "POLYGON(" . implode(",", $polygons) . ")";
+    }
+
+    private static function getPolygonAroundPoints($point1, $point2)
+    {
+        $points = [];
+        $delta  = 0.01;
+
+        $x1 = (double)$point1->lon;
+        $y1 = (double)$point1->lat;
+        $x2 = (double)$point2->lon;
+        $y2 = (double)$point2->lat;
+        if ($x1 > $x2) {
+            $tmp1 = $x1;
+            $tmp2 = $y1;
+            $x1   = $x2;
+            $y1   = $y2;
+            $x2   = $tmp1;
+            $y2   = $tmp2;
+        }
+
+        if ($y1 < $y2) {
+            $x        = $x1 - $delta;
+            $y        = $y1 - $delta;
+            $points[] = "{$x} {$y}";
+
+            $x        = $x1 - $delta;
+            $y        = $y1 + $delta;
+            $points[] = "{$x} {$y}";
+
+            $x        = $x2 - $delta;
+            $y        = $y2 + $delta;
+            $points[] = "{$x} {$y}";
+
+            $x        = $x2 + $delta;
+            $y        = $y2 + $delta;
+            $points[] = "{$x} {$y}";
+
+            $x        = $x2 + $delta;
+            $y        = $y2 - $delta;
+            $points[] = "{$x} {$y}";
+
+            $x        = $x1 + $delta;
+            $y        = $y1 - $delta;
+            $points[] = "{$x} {$y}";
+
+            $x        = $x1 - $delta;
+            $y        = $y1 - $delta;
+            $points[] = "{$x} {$y}";
+        } else {
+            $x        = $x1 - $delta;
+            $y        = $y1 - $delta;
+            $points[] = "{$x} {$y}";
+
+            $x        = $x1 - $delta;
+            $y        = $y1 + $delta;
+            $points[] = "{$x} {$y}";
+
+            $x        = $x1 + $delta;
+            $y        = $y1 + $delta;
+            $points[] = "{$x} {$y}";
+
+            $x        = $x2 + $delta;
+            $y        = $y2 + $delta;
+            $points[] = "{$x} {$y}";
+
+            $x        = $x2 + $delta;
+            $y        = $y2 - $delta;
+            $points[] = "{$x} {$y}";
+
+            $x        = $x2 - $delta;
+            $y        = $y2 - $delta;
+            $points[] = "{$x} {$y}";
+
+            $x        = $x1 - $delta;
+            $y        = $y1 - $delta;
+            $points[] = "{$x} {$y}";
+        }
+
+        return '(' . implode(',', $points) . ')';
     }
 
     /**
      * @param TodoListItem[] $listItems
+     *
      * @return array
      */
     public static function separationItems($listItems)
@@ -134,7 +227,7 @@ class Graph
                 $wayCost += $edge[0]->items[0]->total_distance;
             }
             if ($wayCost < $cost) {
-                $cost = $wayCost;
+                $cost    = $wayCost;
                 $initial = $way;
             }
         }
@@ -210,6 +303,12 @@ class Graph
         return $edge;
     }
 
+    /**
+     * @param $point1
+     * @param $point2
+     *
+     * @return string
+     */
     protected static function getEdgeCacheKey($point1, $point2)
     {
         $key = sprintf('edge_%s_%s_to_%s_%s', $point1->lon, $point1->lat, $point2->lon, $point2->lat);

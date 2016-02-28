@@ -6,29 +6,29 @@
         <div class="left-form__search-icon"></div>
         <div class="left-form__close-icon"></div>
     </div>
-    <div class="left-form__content"  ng-style="{'height': heightList+'px'}">
+    <div class="left-form__content mCustomScrollbar" data-mcs-theme="minimal-dark"  ng-style="{'height': heightList+'px'}">
         <div class="left-from__empty" ng-show="list.todo_list_items.length == 0 && query.length == 0">
             <div class="left-from__empty-icon"></div>
             <div class="left-from__empty-text">Попробуй найди что-нибудь в этом уютненьком городе</div>
         </div>
         <div class="left-form__list" ng-show="query.length == 0">
             <ul>
-                <li ng-repeat="item in list.todo_list_items">
-                    <b>{{item.title}}</b>
-                    <button ng-click="delItem($index)">del</button>
+                <li class="left-form__list-item" ng-repeat="item in list.todo_list_items">
+                    <div class="left-form__list-item-number"><span>1</span></div>
+                    <h4>{{item.title</h4>
+                    <button class="btn-delete" ng-click="delItem($index)"></button>
                 </li>
             </ul>
         </div>
-
         <div class="left-form__hints" ng-show="query.length != 0">
-            <div ng-repeat="item in searchResult" class="search-item" ng-click="addItem(item)">
+            <div ng-repeat="item in searchResult" class="left-form__hints-item" ng-click="addItem(item)">
                 <h4>{{item.title}}</h4>
                 <p>{{item.address}}</p>
             </div>
         </div>
-        <div class="left-form__btn-container">
-            <div class="btn btn-share" style="display: none;"></div>
-            <div class="btn btn-way" ng-click="calcRoute()"></div>
-        </div>
+    </div>
+    <div class="left-form__btn-container">
+        <div class="btn btn-share" style="display: none;"></div>
+        <div class="btn btn-way" ng-click="calcRoute()"></div>
     </div>
 </div>
