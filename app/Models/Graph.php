@@ -154,7 +154,7 @@ class Graph
      * @throws GisRequestException
      * @throws \HttpResponseException
      */
-    public static function findBestPointForCategoryInArea($itemsWithoutPoint, $polygon)
+    public static function findBestPointForCategoryInArea($polygon, $itemsWithoutPoint)
     {
         try {
             foreach ($itemsWithoutPoint as $item) {
