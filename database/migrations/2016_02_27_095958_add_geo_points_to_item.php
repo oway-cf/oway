@@ -14,8 +14,8 @@ class AddGeoPointsToItem extends Migration
     {
         Schema::table('todo_list_item', function(Blueprint $table)
         {
-            $table->string('lon');
-            $table->string('lat');
+            $table->string('lon')->nullable();
+            $table->string('lat')->nullable();
         });
     }
 
