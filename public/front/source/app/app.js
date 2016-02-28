@@ -89,6 +89,9 @@ function LeftFormController($scope, List, Suggest, ListData) {
                 $scope.wayBuilding = false;
                 ListData.ways = response;
                 $scope.ways = response;
+            }, function (response) {
+                $scope.wayBuilding = false;
+                alert('Ошибка расчета маршрута');
             })
     }
     $scope.addItem = function (item) {
