@@ -14,7 +14,7 @@ class AddAddressToItem extends Migration
     {
         Schema::table('todo_list_item', function(Blueprint $table)
         {
-            $table->string('address');
+            $table->string('address')->nullable();
         });
     }
 
