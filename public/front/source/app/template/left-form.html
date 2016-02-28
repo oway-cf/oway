@@ -1,10 +1,15 @@
 <div class="left-form__container">
-    <div class="left-form__search">
+    <div class="left-form__search" ng-show="list.todo_list_items.length <= 15" >
         <input class="input" type="text" placeholder="Поиск..." ng-model="query"
                ng-model-options="{ updateOn: 'default blur', debounce: { 'default': 500, 'blur': 0 } }"
-               ng-change="search()">
+               ng-change="search()"
+               autofocus="autofocus"
+        >
         <div class="left-form__search-icon"></div>
         <div class="left-form__close-icon"></div>
+    </div>
+    <div class="left-form__search" ng-show="list.todo_list_items.length == 15">
+        <p>Достигнут лимит по количеству точек</p>
     </div>
     <div class="left-form__content mCustomScrollbar" data-mcs-theme="minimal-dark"  ng-style="{'height': heightList+'px'}">
         <div class="left-from__empty" ng-show="list.todo_list_items.length == 0 && query.length == 0">
