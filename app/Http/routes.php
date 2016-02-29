@@ -13,3 +13,11 @@ Route::group(['prefix' => 'api'], function () {
         Route::get('/{id}/way', 'WayController@show');
     });
 });
+
+
+Route::get('/deploy', function () {
+    return response()->json(request()->all());
+    $file = base_path() . '/deploy.sh';
+    $response = shell_exec($file);
+    return response($response);
+});

@@ -2,7 +2,7 @@
 
 git pull
 composer install
-php artisan migrate
-cd public/front/
+./artisan migrate
 npm install
+bower install
 gulp build

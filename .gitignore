@@ -10,3 +10,4 @@ storage/cache
 bower_components/
 public/js/
 public/css/
+npm-debug.log
