@@ -15,7 +15,7 @@ Route::group(['prefix' => 'api'], function () {
 });
 
 
-Route::post('/deploy', function () {
+Route::any('/deploy', function () {
     return response()->json(request()->all());
     $file = base_path() . '/deploy.sh';
     $response = shell_exec($file);
