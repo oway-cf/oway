@@ -12,33 +12,15 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
 Route::group(['prefix' => 'api'], function () {
     Route::get('suggest/address/{query?}', 'SuggestController@address');
-    Route::get('suggest/keyword', 'SuggestController@keyword');
-    Route::get('suggest/firm', 'SuggestController@firms');
-    Route::get('suggest', 'SuggestController@index');
     Route::group(['prefix' => 'list'], function () {
         Route::post('/', 'ListController@create');
         Route::post('/{id}/update', 'ListController@update');
         Route::get('/{id}', 'ListController@show');
         Route::get('/{id}/way', 'WayController@show');
     });
-});
-
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| This route group applies the "web" middleware group to every route
-| it contains. The "web" middleware group is defined in your HTTP
-| kernel and includes session state, CSRF protection, and more.
-|
-*/
-
-Route::group(['middleware' => ['web']], function () {
-    //
 });
