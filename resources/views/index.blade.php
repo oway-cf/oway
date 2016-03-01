@@ -95,7 +95,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-sortable/0.13.4/sortable.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script src="//malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
-<script src="app.js"></script>
+<script src="/js/app.js"></script>
 <script type="text/javascript">
     var SHARE_ID;
     (function () {

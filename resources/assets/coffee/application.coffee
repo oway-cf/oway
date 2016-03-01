@@ -1,3 +1,8 @@
+pageHeight = document.documentElement.clientHeight
+map = markerGroup = pathGroup = null
+
+app = angular.module 'oWay', ['ngResource', 'ui.sortable']
+
 app
 .controller 'mapCtrl', MapController
 .controller 'leftFormCtrl', LeftFormController

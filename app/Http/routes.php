@@ -16,7 +16,7 @@ Route::group(['prefix' => 'api'], function () {
 
 
 Route::any('/deploy', function () {
-    return response()->json(request()->all());
+    return response()->json(request()->all(), 200, ['allowedOrigins' => ['*']]);
     $file = base_path() . '/deploy.sh';
     $response = shell_exec($file);
     return response($response);

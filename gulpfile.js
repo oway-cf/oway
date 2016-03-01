@@ -2,7 +2,7 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     coffee = require('gulp-coffee'),
     filter = require('gulp-filter'),
-    rename= require('gulp-rename'),
+    rename = require('gulp-rename'),
     minCss = require('gulp-minify-css'),
     debug = require('gulp-debug'),
     sourcemaps = require('gulp-sourcemaps'),
@@ -25,7 +25,11 @@ gulp.task('default', ['coffee']);
 
 function compileCoffee() {
     return gulp
-        .src('./resources/assets/coffee/**/*.coffee')
+        .src([
+            './resources/assets/coffee/controllers/**/*.coffee',
+            './resources/assets/coffee/directives/**/*.coffee',
+            './resources/assets/coffee/application.coffee'
+        ])
         .pipe(concat('app.coffee'))
         .pipe(coffee())
         .pipe(rename('app.js'))
