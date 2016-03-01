@@ -5,15 +5,15 @@
     <title>oWay - оптимизатор поездок по городу</title>
     <link rel="shortcut icon" href="./image/favicon.png" type="image/x-icon">
     <link rel="icon" href="./image/favicon.png" type="image/x-icon">
-    <link href="//malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/vendor.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,100,100italic,400italic,500,500italic,700,700italic,900,900italic"
           rel="stylesheet" type="text/css">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body ng-controller="MainController">
 <header class="header">
     <div class="header__logo">
-        <img class="header__logo-img" src="image/logo-white.png" alt="oWay">
+        <img class="header__logo-img" src="/image/logo-white.png" alt="oWay">
         <!--<span class="header__logo-slogan">Slogan every body</span>-->
     </div>
     <div class="header__nav">
@@ -87,14 +87,15 @@
 
 <!--Connection scripts-->
 
-<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>
-<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
+{{--<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>--}}
+{{--<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>--}}
 <script src="http://maps.api.2gis.ru/2.0/loader.js?pkg=full"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-resource.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-sortable/0.13.4/sortable.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-<script src="//malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
+{{--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>--}}
+{{--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-resource.min.js"></script>--}}
+{{--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-sortable/0.13.4/sortable.js"></script>--}}
+{{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>--}}
+{{--<script src="//malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>--}}
+<script src="/js/vendor.js"></script>
 <script src="/js/app.js"></script>
 <script type="text/javascript">
     var SHARE_ID;
