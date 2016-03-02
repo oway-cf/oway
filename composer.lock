@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0691720f729f2114910d9850b844179e",
-    "content-hash": "2c4d57198b83d444770348fe57826d32",
+    "hash": "136bd3c2fd05322b337270481ad83c67",
+    "content-hash": "7efbec23cc6134444aa89fb0ed915c9c",
     "packages": [
         {
             "name": "akeinhell/2gis-api",
@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/akeinhell/2gis-api.git",
-                "reference": "5264aac033e674295f514322e3c4636067b043b5"
+                "reference": "7ef5d8b369a137bef087d1bb1dfbe4c0cc7d9552"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/akeinhell/2gis-api/zipball/7ef5d8b369a137bef087d1bb1dfbe4c0cc7d9552",
-                "reference": "5264aac033e674295f514322e3c4636067b043b5",
+                "reference": "7ef5d8b369a137bef087d1bb1dfbe4c0cc7d9552",
                 "shasum": ""
             },
             "require": {
@@ -48,60 +48,7 @@
                 }
             ],
             "description": "обертка для API 2gis",
-            "time": "2016-02-26 22:59:57"
-        },
-        {
-            "name": "barryvdh/laravel-cors",
-            "version": "v0.8.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/barryvdh/laravel-cors.git",
-                "reference": "39975d7505757488f982ca132bcd02c704792fd8"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-cors/zipball/39975d7505757488f982ca132bcd02c704792fd8",
-                "reference": "39975d7505757488f982ca132bcd02c704792fd8",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/support": "5.1.x|5.2.x",
-                "php": ">=5.5.9",
-                "symfony/http-foundation": "~2.7|~3.0",
-                "symfony/http-kernel": "~2.7|~3.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^5.2"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.8-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Barryvdh\\Cors\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Barry vd. Heuvel",
-                    "email": "barryvdh@gmail.com"
-                }
-            ],
-            "description": "Adds CORS (Cross-Origin Resource Sharing) headers support in your Laravel application",
-            "keywords": [
-                "api",
-                "cors",
-                "crossdomain",
-                "laravel"
-            ],
-            "time": "2016-02-11 18:38:09"
+            "time": "2016-02-28 05:20:56"
         },
         {
             "name": "barryvdh/laravel-ide-helper",

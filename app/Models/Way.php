@@ -9,14 +9,18 @@ class Way
 {
     public static function build(TodoList $list)
     {
-        $listItems = $list->todoListItems;
-        $points    = Graph::calculateItemsPoints($listItems);
+        list($itemsWithPoint, $itemsWithoutPoint) = Graph::separationItems(
+            Graph::calculateItemsPoints($list->todoListItems)
+        );
+
+        $routeData = static::getGisRoute($itemsWithPoint);
 
         return [
-            'total_distance' => 123,
-            'total_duration' => 23,
-            'points'         => $points,
-            'paths'          => static::recursivePrepareData(static::getGisRoute($points)),
+            'total_distance' => current(current($routeData)->items)->total_distance,
+            'total_duration' => current(current($routeData)->items)->total_duration,
+            'points'         => $itemsWithPoint,
+            'bad_points'     => $itemsWithoutPoint,
+            'paths'          => static::recursivePrepareData($routeData),
         ];
     }
 

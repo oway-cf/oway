@@ -6,7 +6,8 @@ var map,
 
 var ListData = function () {
     return {
-        ways: []
+        ways: [],
+        coords: [],
     };
 }
 
@@ -33,22 +34,26 @@ var SugestModel = function ($resource, $location) {
 
 var MainController = function ($scope, ListData, List) {
     $scope.ways = ListData.ways;
+    $scope.coords = ListData.coords;
+    console.info(ListData);
     $scope.height = pageHeight - 85;
     $scope.heightList = $scope.height - 60;
 }
 
-function LeftFormController($scope, List, Suggest, ListData) {
-    $scope.$watch('list', function () {
-        console.log('ch');
-    });
+function LeftFormController($scope, List, Suggest, ListData, $location) {
+
     $scope.height = pageHeight - 85;
-    listId = localStorage.getItem('listId');
+    $scope.coords = ListData.coords;
+    listId = $location.path().length == 0 ? localStorage.getItem('listId') : $location.path().substr(1);
+    SHARE_ID = listId;
     $scope.query = '';
-    if (!listId) {
+    if (!listId || Number.isInteger(listId)) {
         List.create({list: {title: 'sample', items: []}})
             .$promise
             .then(function (response) {
                 $scope.list = response;
+                $scope.coords = $scope.list.todo_list_items;
+                console.info(ListData);
                 //$scope.items = [];
                 localStorage.setItem('listId', response.id)
             }, function () {
@@ -60,6 +65,9 @@ function LeftFormController($scope, List, Suggest, ListData) {
             });
     } else {
         $scope.list = List.get({id: listId});
+        $scope.coords = $scope.list.todo_list_items;
+        console.info(ListData);
+        localStorage.setItem('listId', listId);
     }
 
     $scope.search = function () {
@@ -83,9 +91,12 @@ function LeftFormController($scope, List, Suggest, ListData) {
             key: $scope.list.id,
             list: {
                 title: 'abrvalg',
+                address: $scope.list.address,
                 items: $scope.list.todo_list_items
             }
         });
+        $scope.coords = $scope.list.todo_list_items;
+
         List.up($data);
     };
 
@@ -98,25 +109,28 @@ function LeftFormController($scope, List, Suggest, ListData) {
                 $scope.wayBuilding = false;
                 ListData.ways = response;
                 $scope.ways = response;
+                $scope.ways = response;
+
+                $scope.coords = response.points;
             }, function (response) {
                 $scope.wayBuilding = false;
                 alert('Ошибка расчета маршрута');
             })
     }
     $scope.addItem = function (item) {
-        console.log(item);
+        //console.log(item);
         var listItem = {
-            "key": "string",
-            "title": item.title,
-            "type": "geo_point",
-            "position": 0,
-            "after": 0,
-            //"before": "string",
-            "lon": item.location ? item.location.lon : item.lon,
-            "lat": item.location ? item.location.lat : item.lat,
+                "key": "string",
+                "title": item.title,
+                "type": "geo_point",
+                "position": 0,
+                "after": 0,
+                //"before": "string",
+                "lon": item.location ? item.location.lon : item.lon,
+                "lat": item.location ? item.location.lat : item.lat,
 
-    }
-        ;
+            }
+            ;
         $scope.list.todo_list_items.push(listItem);
         $scope.query = '';
         $scope.pushItems();
@@ -144,32 +158,25 @@ function MapController($scope, ListData) {
         markerGroup = DG.featureGroup();
         markerPathGroup = DG.featureGroup();
         pathGroup = DG.featureGroup();
-        var iconMarker = DG.icon({
-            iconUrl: './image/pin-icon.png',
-            iconSize: [30, 36],
-            iconAnchor: [15, 26]
-        });
-        var iconMarkerPath = DG.icon({
-            iconUrl: './image/path-pin.png',
-            iconSize: [28, 28]
-        });
 
 
         function initMaps() {
             map = DG.map('map', {
-                zoom: 13,
+                zoom: 10,
                 center: [54.98, 82.89],
                 fullscreenControl: false,
-                zoomControl: false
+                zoomControl: false,
+                minZoom: 10,
+                maxZoom: 20
             });
             DG.control.zoom({position: 'topright'}).addTo(map);
             map.locate({setView: true, maxZoom: 10});
 
             map.on('click', function (e) {
-                console.log(e.latlng);
+                console.dir(e);
                 var popup = DG.popup()
                     .setLatLng(e.latlng)
-                    .setContent('<div class="map-baloon"><input type="text" class="map-input"><button class="btn btn-ballon">ok</button></div>')
+                    .setContent('<div class="map-baloon"><input type="text" class="map-input" placeholder="Название"><button class="btn-ballon">Добавить в список</button></div>')
                     .openOn(map);
                 $('.btn-ballon').click(function () {
 
@@ -179,10 +186,10 @@ function MapController($scope, ListData) {
                         lon: e.latlng.lng,
                         position: 0,
                         title: $('.map-input').val(),
+                        address: $('.map-input').val(),
                         type: "geo_point",
                         latLon: e.latlng.lat
                     };
-                    console.error(e.latlng);
                     //$scope.listData.todo_list_items.push(newItem);
                     $scope.addPoint({item: newItem});
                     //console.log($scope);
@@ -248,30 +255,100 @@ var MapDirective = function () {
         //replace: true,
         scope: {
             points: '=',
-            addPoint: '&'
+            addPoint: '&',
+            coords: '='
         },
         link: function (scope, el, attr) {
+
             function addLine(line) {
                 DG.Wkt.geoJsonLayer(line).addTo(pathGroup);
                 pathGroup.addTo(map);
                 map.fitBounds(pathGroup.getBounds());
             }
 
-            function addMarker(latLng) {
-                DG.marker(latLng).addTo(markerGroup);
+            function addMarker(latLng, title, pos, addr) {
+                if (!markerGroup) {
+                    return console.warn('markerGroup undefinde');
+                }
+                var iconMarker = DG.icon({
+                    iconUrl: './image/pin-icon.png',
+                    iconSize: [30, 36],
+                    iconAnchor: [15, 26]
+                });
+                var iconMarkerPath = DG.icon({
+                    iconUrl: './image/pin-way.png',
+                    iconSize: [28, 28]
+                });
+                var iconMarkerPathStart = DG.icon({
+                    iconUrl: './image/start-pin.png',
+                    iconSize: [28, 28]
+                });
+                var iconMarkerPathFinish = DG.icon({
+                    iconUrl: './image/finish-pin.png',
+                    iconSize: [28, 28]
+                });
+
+                var icon = iconMarker;
+                switch (pos) {
+                    case 1:
+                        icon = iconMarkerPathStart;
+                        break;
+                    case 2:
+                        icon = iconMarkerPathFinish;
+                        break;
+                }
+                console.log('qqqqqqq', addr);
+                DG.marker(latLng, {icon: icon})
+                    .addTo(markerGroup)
+                    .bindPopup(title + '</br>' + addr);
                 markerGroup.addTo(map);
                 map.fitBounds(markerGroup.getBounds());
             }
 
+            function clear() {
+                if (pathGroup) {
+                    pathGroup.clearLayers();
+                    markerGroup.clearLayers();
+                }
+            }
+
+            function drawBalloons(coords) {
+                for (i in coords) {
+                    //add
+                }
+            }
+
+            scope.$watch('coords', function () {
+                console.log('watch coords', scope.coords);
+                clear();
+                for (var i in scope.coords) {
+                    addMarker(
+                        [scope.coords[i].lat, scope.coords[i].lon],
+                        scope.coords[i].title
+                    );
+                }
+            });
             scope.$watch('points', function () {
                 if (pathGroup) {
-                    pathGroup.removeFrom(map);
-                    markerGroup.removeFrom(map);
+                    clear();
                     for (i in scope.points.paths) {
                         addLine(scope.points.paths[i]);
                     }
-                    for (i in scope.points.points) {
-                        addMarker([scope.points.points[i].lat, scope.points.points[i].lon]);
+                    for (var i in scope.points.points) {
+                        var pos = 0;
+                        if (i == 0) {
+                            pos = 1;
+                        }
+                        if (i == scope.points.points.length - 1) {
+                            pos = 2;
+                        }
+                        console.log(7777777, scope.points.points[i].address);
+                        addMarker(
+                            [scope.points.points[i].lat, scope.points.points[i].lon],
+                            scope.points.points[i].title,
+                            pos,
+                            scope.points.points[i].address || ''
+                        );
                     }
                 }
 

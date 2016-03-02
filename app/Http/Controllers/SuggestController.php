@@ -14,32 +14,6 @@ use Mockery\CountValidator\Exception;
 
 class SuggestController extends Controller
 {
-
-    public function smart()
-    {
-        $item = [
-            "id"     => 1,
-            "title"  => "string",
-            "photo"  => "http://placehold.it/200x200",
-            "type"   => "geo_point",
-            "rating" => "9.54",
-            "lon"    => "55.55555",
-            "lat"    => "88.88888",
-        ];
-
-        return response()->json([
-            $item,
-            $item,
-            $item,
-            $item,
-            $item,
-            $item,
-            $item,
-            $item,
-            $item,
-        ]);
-    }
-
     public function address($query = null)
     {
         $query = $query ?: request('query');
@@ -66,8 +40,8 @@ class SuggestController extends Controller
         }
 
         $addressList = [];
-        if ($data) {
 
+        if ($data) {
             foreach ($data->getItems() as $item) {
                 $location = null;
                 $lat      = null;
@@ -124,83 +98,22 @@ class SuggestController extends Controller
                 ];
             }
         }
-        $return = array_merge($addressList, $companyList);
+
+        $userQueryList = [
+            [
+                "key"      => null,
+                "title"    => $query,
+                'type'     => 'rubric',
+                "address"  => null,
+                "location" => [
+                    'lon' => null,
+                    'lat' => null,
+                ]
+            ]
+        ];
+
+        $return = array_merge($userQueryList, $addressList, $companyList);
 
         return response()->json($return);
-    }
-
-
-    /**
-     * @todo рубрика
-     * @todo фирма
-     * @todo достопримечательность
-     *
-     * @param bool $json
-     *
-     * @return array|\Illuminate\Http\JsonResponse
-     */
-    public function keyword($json = true)
-    {
-        throw new Exception('Не реализовано!!! :-)');
-
-        return response()->json([]);
-        $query   = request('query');
-        $company = [];
-        $rubric  = [];
-
-
-        $params = new RubricParams();
-        $params
-            ->setQuery($query)
-            ->setRegionId(request('region', 1))
-            ->setPageSize(5);
-
-        try {
-            $data = Api2Gis::call()->RubricSearch($params);
-        } catch (GisRequestException $e) {
-            $data = null;
-        }
-
-        if ($data) {
-            foreach ($data->getItems() as $item) {
-                $company[] = [
-                    'key'      => $item->id,
-                    'type'     => 'rubric',
-                    "title"    => $item->name,
-                    'address'  => null,
-                    'rubric'   => null,
-                    'location' => null,
-                ];
-            }
-        }
-
-
-        $result = array_merge($rubric, $company);
-
-        return $json ? response()->json($result) : $result;
-    }
-
-    public function index()
-    {
-        $data = array_merge(
-            $this->address(false),
-            $this->keyword(false)
-
-        );
-
-        return response()->json($data);
-    }
-
-    public function firms()
-    {
-        $query = request('query');
-
-        try {
-            $data = Firms::find($query);
-        } catch (GisRequestException $e) {
-            $data = null;
-        }
-
-        return response()->json($data);
     }
 }

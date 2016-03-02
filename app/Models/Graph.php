@@ -3,13 +3,10 @@
 namespace App\Models;
 
 use akeinhell\Api2Gis;
-use akeinhell\RequestParams\BranchParams;
+use akeinhell\Exceptions\GisRequestException;
 use akeinhell\RequestParams\CarRouteParams;
-use akeinhell\RequestParams\RubricParams;
 use App\API\YandexConnector;
 use Cache;
-use akeinhell\Exceptions\GisRequestException;
-use App\Models\Firms;
 
 /**
  * Class Graph
@@ -165,12 +162,14 @@ class Graph
                 $rubricName = array_get($getRubric, 'features.0.properties.CompanyMetaData.Categories.0.name');
 
                 if ($rubricName) {
-                    $firmList   = static::prepareData(Firms::find($rubricName, $polygon)->getItems());
-                    $firm       = array_get($firmList, '1') ?: array_get($firmList, '0');
-                    $point      = array_get($firm, 'point', []);
-                    $item->lon  = array_get($point, 'lon', null);
-                    $item->lat  = array_get($point, 'lat', null);
-                    $item->save();
+                    $firmList      = static::prepareData(Firms::find($rubricName, $polygon)->getItems());
+                    $firm          = array_get($firmList, '1') ?: array_get($firmList, '0');
+                    $addressName   = array_get($firm, 'address_name', '');
+                    $firmName      = array_get($firm, 'name', '');
+                    $point         = array_get($firm, 'point', []);
+                    $item->lon     = array_get($point, 'lon', null);
+                    $item->lat     = array_get($point, 'lat', null);
+                    $item->address = sprintf('%s (%s)', $firmName, $addressName);
                 }
             }
 
@@ -187,14 +186,14 @@ class Graph
      */
     public static function prepareData($items)
     {
-        if(is_object($items)) {
-            $items = (array) $items;
+        if (is_object($items)) {
+            $items = (array)$items;
         }
 
-        if(is_array($items)) {
+        if (is_array($items)) {
             $new = [];
 
-            foreach($items as $key => $val) {
+            foreach ($items as $key => $val) {
                 $new[$key] = static::prepareData($val);
             }
         } else $new = $items;
@@ -223,8 +222,7 @@ class Graph
             $way[]   = (count($listItems) - 1);
             $wayCost = 0;
             for ($j = 0; $j < count($way) - 1; $j++) {
-                $edge = static::getEdge($listItems[$way[$j]], $listItems[$way[$j + 1]]);
-                $wayCost += $edge[0]->items[0]->total_distance;
+                $wayCost += (float)static::getEdgeCost($listItems[$way[$j]], $listItems[$way[$j + 1]]);
             }
             if ($wayCost < $cost) {
                 $cost    = $wayCost;
@@ -287,20 +285,25 @@ class Graph
         return $arr;
     }
 
-    protected static function getEdge($point1, $point2)
+    protected static function getEdgeCost($point1, $point2)
     {
         $cacheKey = static::getEdgeCacheKey($point1, $point2);
 
-        if (!($edge = Cache::get($cacheKey))) {
-            $routePoints = new CarRouteParams();
-            $routePoints->addWaypoint([$point1->lon, $point1->lat]);
-            $routePoints->addWaypoint([$point2->lon, $point2->lat]);
-            Api2Gis::call()->CarRouteDirectionsAsync($routePoints);
-            $edge = Api2Gis::call()->execute();
-            Cache::put($cacheKey, $edge, 30);
+        if (!($edgeCost = Cache::get($cacheKey))) {
+            if ($point1->lon != $point2->lon || $point1->lat != $point2->lat) {
+                $routePoints = new CarRouteParams();
+                $routePoints->addWaypoint([$point1->lon, $point1->lat]);
+                $routePoints->addWaypoint([$point2->lon, $point2->lat]);
+                Api2Gis::call()->CarRouteDirectionsAsync($routePoints);
+                $edge     = Api2Gis::call()->execute();
+                $edgeCost = $edge[0]->items[0]->total_distance;
+            } else {
+                $edgeCost = 0.0000001;
+            }
+            Cache::put($cacheKey, $edgeCost, 30);
         }
 
-        return $edge;
+        return $edgeCost;
     }
 
     /**
