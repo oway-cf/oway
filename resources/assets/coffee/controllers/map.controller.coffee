@@ -26,28 +26,28 @@ MapController = ($scope, ListData)->
       DG.control.zoom({position: 'topright'}).addTo(map);
       map.locate({setView: true, maxZoom: 10});
 
-    map.on 'click', (e) ->
-      popup = DG.popup()
-      .setLatLng(e.latlng)
-      .setContent('<div class="map-baloon"><input type="text" class="map-input"><button class="btn btn-ballon">ok</button></div>')
-      .openOn(map);
-      $('.btn-ballon').click ()->
-        newItem = {
-          after: 0,
-          lat: e.latlng.lat,
-          lon: e.latlng.lng,
-          position: 0,
-          title: $('.map-input').val(),
-          type: "geo_point",
-          latLon: e.latlng.lat
-        };
+      map.on 'click', (e) ->
+        popup = DG.popup()
+        .setLatLng(e.latlng)
+        .setContent('<div class="map-baloon"><input type="text" class="map-input"><button class="btn btn-ballon">ok</button></div>')
+        .openOn(map);
+        $('.btn-ballon').click ()->
+          newItem = {
+            after: 0,
+            lat: e.latlng.lat,
+            lon: e.latlng.lng,
+            position: 0,
+            title: $('.map-input').val(),
+            type: "geo_point",
+            latLon: e.latlng.lat
+          };
 
-        console.error(e.latlng)
-        #$scope.listData.todo_list_items.push(newItem);
-        $scope.addPoint({item: newItem})
-        #console.log($scope);
+          console.error(e.latlng)
+          #$scope.listData.todo_list_items.push(newItem);
+          $scope.addPoint({item: newItem})
+          #console.log($scope);
 
-        popup._closePopup();
+          popup._closePopup();
 
     addMarker = (latLng)->
       DG.marker(latLng, {icon: iconMarker}).addTo(markerGroup);

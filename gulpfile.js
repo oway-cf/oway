@@ -26,10 +26,12 @@ gulp.task('default', ['coffee', 'bower']);
 function compileCoffee() {
     return gulp
         .src([
+            './resources/assets/coffee/config.coffee',
             './resources/assets/coffee/models/**/*.coffee',
             './resources/assets/coffee/factory/**/*.coffee',
             './resources/assets/coffee/controllers/**/*.coffee',
             './resources/assets/coffee/directives/**/*.coffee',
+            './resources/assets/coffee/routes.coffee',
             './resources/assets/coffee/application.coffee'
         ])
         .pipe(debug({title: 'coffee:'}))
