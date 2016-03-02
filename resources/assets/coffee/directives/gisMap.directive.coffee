@@ -14,6 +14,7 @@ MapDirective = ->
 
 
     scope.$watch 'points', () ->
+      console.log 'points_watch', scope.points
       if (pathGroup)
         pathGroup.removeFrom(map);
         markerGroup.removeFrom(map);
