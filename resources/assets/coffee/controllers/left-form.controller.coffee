@@ -26,16 +26,16 @@ LeftFormController = ($scope, List, Suggest, ListData)->
 
 
   $scope.pushItems = () ->
-
-  $data = ({
-    id: $scope.list.id,
-    key: $scope.list.id,
-    list: {
-      title: 'abrvalg',
-      items: $scope.list.todo_list_items
-    }
-  });
-  List.up($data);
+    console.log 'push', $scope, $scope.list, $scope.list.id
+    $data = ({
+      id: $scope.list.id,
+      key: $scope.list.id,
+      list: {
+        title: 'abrvalg1',
+        items: $scope.list.todo_list_items
+      }
+    });
+    List.up($data);
 
   $scope.calcRoute = () ->
     $scope.wayBuilding = true;

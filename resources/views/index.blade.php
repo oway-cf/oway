@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="oWay">
+<html lang="en" ng-app="oWay" ng-controller="MainController">
 <head>
     <meta charset="UTF-8">
     <title>oWay - оптимизатор поездок по городу</title>
@@ -10,7 +10,7 @@
           rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="/css/styles.css">
 </head>
-<body ng-controller="MainController">
+<body>
 <header class="header">
     <div class="header__logo">
         <img class="header__logo-img" src="/image/logo-white.png" alt="oWay">
@@ -87,14 +87,8 @@
 
 <!--Connection scripts-->
 
-{{--<script src="https://code.jquery.com/jquery-2.2.1.min.js"></script>--}}
-{{--<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>--}}
 <script src="http://maps.api.2gis.ru/2.0/loader.js?pkg=full"></script>
-{{--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>--}}
-{{--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-resource.min.js"></script>--}}
-{{--<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-sortable/0.13.4/sortable.js"></script>--}}
-{{--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>--}}
-{{--<script src="//malihu.github.io/custom-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>--}}
+
 <script src="/js/vendor.js"></script>
 <script src="/js/app.js"></script>
 <script type="text/javascript">
@@ -112,9 +106,9 @@
             h.appendChild(s);
         }
     })();</script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
-        integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-        crossorigin="anonymous"></script>
+{{--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"--}}
+{{--integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"--}}
+{{--crossorigin="anonymous"></script>--}}
 
 <script>
     $('#myModal').on('shown.bs.modal', function () {

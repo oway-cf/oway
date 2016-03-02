@@ -68,3 +68,9 @@ gulp.task('fonts', function () {
         .pipe(debug({title: 'fonts:'}))
         .pipe(gulp.dest('./public/fonts'))
 });
+
+gulp.task('dev', ['default'], function () {
+    gulp.watch('./resources/assets/coffee/**/*.coffee', ['coffee']);
+    //gulp.watch('css/**/*.css', ['css']);
+    //gulp.watch('css/**/*.less', ['css']);
+})
