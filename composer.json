@@ -13,7 +13,7 @@
         "akeinhell/2gis-api": "dev-master",
         "barryvdh/laravel-ide-helper": "^2.1",
         "doctrine/dbal": "^2.5",
-        "barryvdh/laravel-cors": "^0.8.0"
+        "predis/predis": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

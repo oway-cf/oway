@@ -19,7 +19,7 @@ var uglify = require('gulp-uglify');
 var gulpFilter = require('gulp-filter');
 
 gulp.task('coffee', compileCoffee);
-gulp.task('default', ['coffee', 'bower']);
+gulp.task('default', ['js', 'bower']);
 //gulp.task('leff', compileLess);
 
 
@@ -40,6 +40,17 @@ function compileCoffee() {
         .pipe(rename('app.js'))
         .pipe(gulp.dest('./public/js'));
 }
+
+// Компилим кофе, и конкатим с JS
+gulp.task('js', ['coffee'], function(){
+    return gulp.src([
+            './resources/assets/js/**/*.js',
+            './public/js/app.js',
+        ])
+        .pipe(debug({title: 'add_js:'}))
+        .pipe(concat('app.js'))
+        .pipe(gulp.dest('./public/js'));
+});
 
 gulp.task('bower', ['fonts'], function () {
     var filterJS = gulpFilter('**/*.js', {restore: true});
@@ -71,8 +82,15 @@ gulp.task('fonts', function () {
         .pipe(gulp.dest('./public/fonts'))
 });
 
-gulp.task('dev', ['default'], function () {
+gulp.task('front', ['default', 'templates:laravel'], function () {
     gulp.watch('./resources/assets/coffee/**/*.coffee', ['coffee']);
     //gulp.watch('css/**/*.css', ['css']);
     //gulp.watch('css/**/*.less', ['css']);
 })
+
+// Копируем шаблон laravel в папку public
+gulp.task('templates:laravel', function(){
+    return gulp.src('./resources/views/index.blade.php')
+        .pipe(rename('index.html'))
+        .pipe(gulp.dest('./public/'));
+});
