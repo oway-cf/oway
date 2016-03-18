@@ -294,9 +294,8 @@ class Graph
                 $routePoints = new CarRouteParams();
                 $routePoints->addWaypoint([$point1->lon, $point1->lat]);
                 $routePoints->addWaypoint([$point2->lon, $point2->lat]);
-                Api2Gis::call()->CarRouteDirectionsAsync($routePoints);
-                $edge     = Api2Gis::call()->execute();
-                $edgeCost = $edge[0]->items[0]->total_distance;
+                $edge     = Api2Gis::call()->CarRouteDirections($routePoints);
+                $edgeCost = current($edge->getItems())->total_distance;
             } else {
                 $edgeCost = 0.0000001;
             }
