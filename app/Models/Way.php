@@ -16,8 +16,8 @@ class Way
         $routeData = static::getGisRoute($itemsWithPoint);
 
         return [
-            'total_distance' => current(current($routeData)->items)->total_distance,
-            'total_duration' => current(current($routeData)->items)->total_duration,
+            'total_distance' => current($routeData->getItems())->total_distance,
+            'total_duration' => current($routeData->getItems())->total_duration,
             'points'         => $itemsWithPoint,
             'bad_points'     => $itemsWithoutPoint,
             'paths'          => static::recursivePrepareData($routeData),
@@ -60,8 +60,6 @@ class Way
             $routePoints->addWaypoint([$point->lon, $point->lat]);
         }
 
-        Api2Gis::call()->CarRouteDirectionsAsync($routePoints);
-
-        return Api2Gis::call()->execute();
+        return Api2Gis::call()->CarRouteDirections($routePoints);
     }
 }
