@@ -1,18 +1,7 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Routes File
-|--------------------------------------------------------------------------
-|
-| Here is where you will register all of the routes in an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/
-
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
 Route::group(['prefix' => 'api'], function () {
@@ -25,17 +14,10 @@ Route::group(['prefix' => 'api'], function () {
     });
 });
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| This route group applies the "web" middleware group to every route
-| it contains. The "web" middleware group is defined in your HTTP
-| kernel and includes session state, CSRF protection, and more.
-|
-*/
 
-Route::group(['middleware' => ['web']], function () {
-    //
+Route::any('/deploy', function () {
+    return response()->json(request()->all(), 200, ['allowedOrigins' => ['*']]);
+    $file = base_path() . '/deploy.sh';
+    $response = shell_exec($file);
+    return response($response);
 });

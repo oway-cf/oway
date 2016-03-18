@@ -1,0 +1,26 @@
+{
+  "name": "oway",
+  "description": "Оптимизатор поездок по городу",
+  "main": "",
+  "authors": [
+    "Aleksey <akeinhell@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "http://oway.cf",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery-ui": "^1.11.4",
+    "angular": "^1.5.0",
+    "angular-resource": "^1.5.0",
+    "malihu-custom-scrollbar-plugin": "^3.1.3",
+    "components-font-awesome": "^4.5.0",
+    "angular-ui-sortable": "^0.13.4"
+  }
+}

@@ -7,3 +7,8 @@ Homestead.json
 .env
 composer.lock
 storage/cache
+bower_components/
+public/js/
+public/css/
+npm-debug.log
+public/fonts
